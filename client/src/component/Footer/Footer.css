@@ -1,0 +1,124 @@
+.footer {
+  background: #131921;
+  color: #fff;
+  padding: 10px 0;
+}
+
+.footer__container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.footer__section {
+  width: 23%;
+}
+
+.footer__section-title {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #ffcc43;
+  font-size: 25px;
+}
+
+.footer__section-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer__section-list li {
+  margin-bottom: 10px;
+}
+
+.footer__section-list a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer__section-list a:hover {
+  text-decoration: underline;
+  color: #ffcc43;
+}
+
+.footer__copy {
+  font-size: 14px;
+  margin-bottom: 10px;
+  margin-left: 12px;
+}
+
+.footer__social-icons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer__social-media {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.footer__social-media a {
+  color: #fff;
+  margin-right: 10px;
+  font-size: 20px;
+  text-decoration: none;
+}
+
+.footer__social-media a:hover {
+  opacity: 0.7;
+}
+
+.footer__subscribe-form {
+  display: flex;
+  margin-top: 10px;
+}
+
+.subscribe-description {
+  text-align: left;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.footer__subscribe-form input[type="email"] {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.footer__subscribe-form button[type="submit"] {
+  padding: 9px 9px;
+  border: none;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.footer__subscribe-form button[type="submit"]:hover {
+  border: 1px solid #fff;
+  background-color: #131921;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .footer__section {
+    width: 45%;
+    margin-bottom: 20px;
+  }
+
+  .footer__social-icons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer__social-media a {
+    margin: 0 0 10px 10px;
+  }
+}

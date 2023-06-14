@@ -1,0 +1,68 @@
+.banner {
+  position: relative;
+  overflow: hidden;
+  margin-top: 110px;
+}
+
+.banner-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: transparent;
+  color: white;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+}
+
+.banner-left {
+  left: 10px;
+}
+
+.banner-right {
+  right: 10px;
+}
+
+.banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.banner-dots {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 10px; /* Adjust the spacing from the bottom */
+  left: 0;
+  right: 0;
+}
+
+.banner-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.banner-dot.active {
+  background-color: white;
+}
+
+/* Responsive Styles */
+
+@media (max-width: 768px) {
+  .banner-arrow {
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+  }
+}

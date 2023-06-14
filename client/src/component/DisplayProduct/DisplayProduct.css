@@ -1,0 +1,65 @@
+.card{
+    margin: 3% 3% 3% 3%;
+    padding: 1%;
+    width: 25%;
+    background-color: #EEEEEE;
+    text-decoration: none;
+    color: black;
+}
+
+.product-img{
+    position: relative;
+}
+.product-img img{
+    width: 90%;
+    margin: 0 auto;
+    display: block;
+    transition: 0.2s all ease-in-out;
+}
+
+.product-img p{
+  z-index: 100;
+  position: absolute;
+  padding: 1%;
+  background-color: rgb(198, 42, 42);
+  color: white;
+  font-size: 10px;
+  bottom: 1%;
+  right: 8%;
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.description h4{
+    text-align: center;
+    padding: 2%;
+}
+
+.price{
+    text-align: center;
+}
+.mrp{
+  font-size: 13px;
+  margin-right: 10px;
+}
+
+.realp{
+    font-size: 18px;
+    margin-left: 10px;
+}
+
+.card:hover img {
+    transform: scale(1.04);
+}
+
+.card:hover .description h4{
+    text-decoration: underline;
+}
+
+
+
+@media only screen and (min-width: 360px) and (max-width: 768px) {
+    .card{
+        flex: 40%;
+      }
+}
+

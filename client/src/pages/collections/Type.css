@@ -1,0 +1,15 @@
+.outer-container {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+
+.heading{
+    font-family: 'Open Sans', sans-serif;
+font-family: 'Playfair Display', serif;
+}
+
+.card-flex{
+    display: flex;
+    flex-wrap: wrap;
+}

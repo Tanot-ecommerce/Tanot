@@ -1,0 +1,9 @@
+.cart-main{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cart-left{
+    flex: 60%;
+    
+}
