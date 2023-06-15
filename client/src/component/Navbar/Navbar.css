@@ -192,7 +192,6 @@ header nav .drawer {
   header nav {
     overflow: hidden;
   }
-  header nav .right .nav_btn,
   header nav .right .avtar2,
   header nav .right .avtar {
     display: none;

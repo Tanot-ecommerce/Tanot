@@ -1,4 +1,4 @@
-import { React, useContext } from "react";
+import { React, useContext, useEffect } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 import logo from "../../Images/logo.png";
@@ -12,12 +12,34 @@ import { LoginContext } from "../context/ContextProvider";
 const Navbar = () => {
     const { account, setAccount } = useContext(LoginContext);
 
+    const getDetailValidUser = async () => {
+        const res = await fetch("/validuser", {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            credentials: "include",
+        });
+
+        const data = await res.json();
+        // console.log(data);
+        if (res.status === 201) {
+            console.log("data valid");
+            setAccount(data);
+        } else {
+            console.log("cookies error");
+        }
+    };
+
+    useEffect(() => {
+        getDetailValidUser();
+    }, []);
     //if(account)
     // console.log(account);
     // else
     // console.log("account is null")
 
-    let user = 1;
     return (
         <header>
             <nav>
@@ -35,10 +57,7 @@ const Navbar = () => {
                     </div>
                 </div>
                 <div className="right">
-                    <Link to="/Auth">
-                        <div className="nav_btn">Sign In</div>
-                    </Link>
-                    {account ? (
+                    {account && (
                         <Link to="/Cart">
                             <div className="cart_btn">
                                 <Badge
@@ -49,26 +68,19 @@ const Navbar = () => {
                                 </Badge>
                             </div>
                         </Link>
-                    ) : (
-                        <Link to="/Auth">
-                            <div className="cart_btn">
-                                <Badge badgeContent={0} color="primary">
-                                    <ShoppingCartIcon id="icon" />
-                                </Badge>
-                            </div>
-                        </Link>
                     )}
-                    {account ? (
+                    {account && (
                         <Link to="/Profile">
                             <Avatar className="avtar" />
                         </Link>
-                    ) : (
+                    )}
+                    {!account && (
                         <Link to="/Auth">
-                            <UserLoginLogo className="avtar" />
+                            <div className="nav_btn">Sign In</div>
                         </Link>
                     )}
 
-                    {/* {user != null && (
+                    {/* {account != null && (
             <Link to="/Cart">
               <div className="cart_btn">
                 <Badge badgeContent={1} color="primary">
@@ -77,13 +89,13 @@ const Navbar = () => {
               </div>
             </Link>
           )}
-          {user != null && (
+          {account != null && (
             <Link to="/Profile">
-              <UserLoginLogo className="avtar" />
+              <userLoginLogo className="avtar" />
             </Link>
           )}
 
-          {user === null && (
+          {account === null && (
             <div className="nav_btn">
               <Link to="/Auth">Sign In</Link>
             </div>

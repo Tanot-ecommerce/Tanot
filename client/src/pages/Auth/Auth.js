@@ -1,6 +1,7 @@
 import React from "react";
 import "./Auth.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { LoginContext } from "../../component/context/ContextProvider";
 import {ToastContainer, toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 ;// import GoogleIcon from '@mui/icons-material/Google';
@@ -11,6 +12,7 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [cpassword, setcPassword] = useState("");
 
+  const {account, setAccount} = useContext(LoginContext);
 
   //to authenticate login 
   const handleSubmitLogin = async(e) => {
@@ -47,6 +49,7 @@ const Auth = () => {
     // console.log("login data valid");
     setName("");
     setEmail("");
+    setAccount(data);
     toast.success("Logged In succefully",{
       position: "top-center",
     })

@@ -1,8 +1,8 @@
-import product1Image from "./product1.jpg";
-import product2Image from "./product2.jpg";
-import product3Image from "./product3.jpg";
-import product4Image from "./product4.jpg";
-import product5Image from "./product5.jpg";
+import product1Image from "../Images/product1.jpeg";
+import product2Image from "../Images/product2.jpeg";
+import product3Image from "../Images/product3.jpeg";
+import product4Image from "../Images/product4.jpeg";
+import product5Image from "../Images/product5.jpeg";
 
 const CartData = [
     {
