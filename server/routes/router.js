@@ -118,7 +118,7 @@ router.post("/login",async(req,res)=>{
       // console.log(token);
 
       res.cookie("Amazonweb",token,{
-        expires: new Date(Date.now()+ 900000),  //cookie expire in 15 min
+        expires: new Date(Date.now()+ 9000000),  //cookie expire in 15 min
         httpOnly:true
       })
      if(!isMatch){
@@ -170,4 +170,31 @@ router.get("/cart", authenticate, async(req,res) =>{
   }
 })
 
+//get valid user
+router.get("/validuser", authenticate, async(req,res) =>{
+  try{
+     const vailduserone = await USER.findOne({_id:req.userID});
+     res.status(201).json(vailduserone);
+  }catch(error){
+    console.log("error in cartitems"+error.message);
+  }
+})
+
+//remove item from cart
+router.delete("/remove/:id",authenticate, async(req,res) => {
+  try{
+   const {id} = req.params;
+
+   req.rootUser.carts = req.rootUser.carts.filter((crval) =>{
+    return crval.id != id;
+   });
+
+   req.rootUser.save();
+   res.status(201).json(req.rootUser);
+   console.log("item remove");
+  }catch(err){
+    console.log("error"+err);
+    res.status(400).json(req.rootUser);
+  }
+})
 module.exports = router;

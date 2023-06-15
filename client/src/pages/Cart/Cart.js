@@ -4,7 +4,7 @@ import DisplayProduct from "../../component/DisplayProduct/DisplayProduct"
 const Cart = () => {
 
 const [cartData, setCartData] =useState("");
-// console.log(cartData.carts);
+// console.log(cartData);
 
   
 
@@ -32,6 +32,7 @@ const [cartData, setCartData] =useState("");
     getdatabuy();
   },[])
 
+  
 
   return (
     <>
