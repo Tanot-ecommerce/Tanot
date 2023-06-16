@@ -192,6 +192,18 @@ header nav .drawer {
   header nav {
     overflow: hidden;
   }
+  header nav .left input {
+    display: none;
+  }
+  .navlogo {
+    display: inline-block;
+    margin: auto auto;
+  }
+
+  header nav .left .search_icon {
+    display: none;
+  }
+  
   header nav .right .avtar2,
   header nav .right .avtar {
     display: none;

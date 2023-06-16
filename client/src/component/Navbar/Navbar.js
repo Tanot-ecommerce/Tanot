@@ -8,6 +8,13 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { UserLoginLogo } from "../../utils/assets/svg";
 import Avatar from "@mui/material/Avatar";
 import { LoginContext } from "../context/ContextProvider";
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const Navbar = () => {
     const { account, setAccount } = useContext(LoginContext);
@@ -44,6 +51,11 @@ const Navbar = () => {
         <header>
             <nav>
                 <div className="left">
+
+                    <IconButton className="hamburgur">
+                        <MenuIcon style={{color:"#fff"}} className="Menu-icon"/>
+                    </IconButton>
+
                     <Link to="/">
                         <div className="navlogo">
                             <img src={logo} alt="logo" />
