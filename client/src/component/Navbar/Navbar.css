@@ -44,7 +44,7 @@ header nav .left input {
 
 header nav .left .search_icon {
   background-color: #febd69;
-  height: 40px;
+  height: 38px;
   width: 40px;
   display: flex;
   justify-content: center;
@@ -188,10 +188,29 @@ header nav .drawer {
 @media (max-width: 800px) {
   header .hamburgur {
     display: block;
+    width: 40px;
   }
+  
   header nav {
     overflow: hidden;
   }
+  header nav .left input {
+    display: none;
+  }
+
+  .navlogo {
+    display: inline-block;
+    margin: auto auto;
+  }
+
+  header nav .navlogo img {
+    margin: auto auto;
+  }
+  
+  header nav .left .search_icon {
+    display: none;
+  }
+  
   header nav .right .avtar2,
   header nav .right .avtar {
     display: none;
