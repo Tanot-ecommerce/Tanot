@@ -26,8 +26,7 @@ const Type1 = () => {
         console.error('Error fetching data:', error);
       }
     };
-    setTimeout(gettypedata, 1000);
-    // gettypedata();
+    gettypedata();
   }, [id]);
 
   return (

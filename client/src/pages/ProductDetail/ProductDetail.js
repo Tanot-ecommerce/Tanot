@@ -34,6 +34,8 @@ const ProductDetail = () => {
     };
 
 
+    //set loading 
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
 
@@ -53,13 +55,14 @@ const ProductDetail = () => {
             }
             else {
                 console.log("got individual data");
+                setLoading(false);
                 setIndData(data);
                 setImageUrl(data.url);
             }
         }
 
-        setTimeout(getinddata,1000);
-    //    getinddata();
+        // setTimeout(getinddata,1000);
+       getinddata();
     }, [id]);
 
     // console.log(indData);
@@ -125,7 +128,7 @@ const ProductDetail = () => {
     return (
         <>
            {
-                !indData ? 
+                loading ? 
                 (
                 <div className="circle">
                     <CircularProgress />
