@@ -11,7 +11,6 @@ import Testimonials from "../../component/Testimonials/Testimonials";
 const Home = () => {
     return (
         <>
-            <Navbar />
             <Banner />
             <Promises />
             <ShopByCategory />
