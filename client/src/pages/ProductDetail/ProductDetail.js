@@ -2,13 +2,14 @@ import React, { useContext } from 'react'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { LoginContext } from '../../component/context/ContextProvider'
+import CircularProgress from '@mui/material/CircularProgress';
 import './ProductDetail.css'
 
 import heart from '../../Images/heart.svg'
 
 const ProductDetail = () => {
 
-    const {account,setAccount} = useContext(LoginContext)
+    const { account, setAccount } = useContext(LoginContext)
     //take data from backend (value of id in url)
     const { id } = useParams("");
     const Navigate = useNavigate("");
@@ -57,40 +58,40 @@ const ProductDetail = () => {
             }
         }
 
-        getinddata();
+        setTimeout(getinddata,1000);
+    //    getinddata();
     }, [id]);
 
     // console.log(indData);
 
 
     //add to cart function
-    const addtocart = async(id) => {
-        const checkres = await fetch(`/addCart/${id}`,{
-            method:"POST",
-            headers:{
-                Accept:"application/json",
+    const addtocart = async (id) => {
+        const checkres = await fetch(`/addCart/${id}`, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
                 "Content-Type": "application/json"
             },
-            body:JSON.stringify({
+            body: JSON.stringify({
                 indData
             }),
-            credentials:"include"
+            credentials: "include"
         });
 
 
-        const data1= await checkres.json();
+        const data1 = await checkres.json();
         // console.log(data1 +"ok");
 
-        if(checkres.status !== 201)
-        {
+        if (checkres.status !== 201) {
             console.log("user invalid");
             Navigate("/Auth");
             // alert("user invalid");
         }
-        else{
+        else {
             setAccount(data1);
             Navigate("/Cart");
-            
+
             // console.log(account);
             // alert("data added in your cart");
         }
@@ -119,10 +120,20 @@ const ProductDetail = () => {
         displayImage(imageUrl);
     };
 
-    
+
 
     return (
         <>
+           {
+                !indData ? 
+                (
+                <div className="circle">
+                    <CircularProgress />
+                    <h2>Loading...</h2>
+                </div> 
+                )
+                :
+                (
             <div className='p-detail-outer'>
                 <div className='p-left'>
                     <div className="product-images">
@@ -183,6 +194,9 @@ const ProductDetail = () => {
 
                 </div>
             </div>
+                )
+           }
+            
         </>
     )
 }

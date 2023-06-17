@@ -10,7 +10,7 @@ router.get('/getproducts', async (req, res) => {
   try {
 
     const productdata = await Products.find();
-    //    console.log(productdata);
+       console.log(productdata);
     res.status(201).json(productdata);
   } catch (error) {
     console.log("error" + error.message);
@@ -113,7 +113,12 @@ router.post("/login",async(req,res)=>{
       const isMatch = await bcrypt.compare(password,userLogin.password);
     //  console.log(isMatch);
     
-      //token generate
+     
+     if(!isMatch){
+      res.status(400).json({error:"Invalid credential"})
+     }
+     else{
+       //token generate
       const token = await userLogin.generateAuthToken();
       // console.log(token);
 
@@ -121,10 +126,7 @@ router.post("/login",async(req,res)=>{
         expires: new Date(Date.now()+ 9000000),  //cookie expire in 15 min
         httpOnly:true
       })
-     if(!isMatch){
-      res.status(400).json({error:"Invalid credential"})
-     }
-     else{
+      
       res.status(201).json(userLogin)
      }
     }else{
@@ -195,6 +197,22 @@ router.delete("/remove/:id",authenticate, async(req,res) => {
   }catch(err){
     console.log("error"+err);
     res.status(400).json(req.rootUser);
+  }
+})
+
+//for user logout
+router.get("/logout", authenticate, (req,res) =>{
+  try{
+    //remove all tokens
+    req.rootUser.tokens.length = 0;
+
+    res.clearCookie("Amazonweb",{path:"/"});
+
+    req.rootUser.save();
+    res.status(201).json(req.rootUser.tokens);
+    console.log("user logout");
+  }catch(error){
+    console.log("err for user logout");
   }
 })
 module.exports = router;

@@ -149,7 +149,7 @@ const Auth = () => {
                            }} />
 					<button onClick={handleSubmitSignup}>Sign up</button>
 				</form>
-        <ToastContainer />
+        <ToastContainer style={{zIndex:"1000"}}/>
 			</div>
 
 			<div className="login">
@@ -161,7 +161,7 @@ const Auth = () => {
                            onChange={(e) => {
                              setEmail(e.target.value);
                            }} />
-					<input  type="text"
+					<input  type="password"
                            name="password"
                            placeholder="Type pwd here..."
                            onChange={(e) => {

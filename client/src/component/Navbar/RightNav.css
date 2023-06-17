@@ -7,13 +7,13 @@
     display: flex;
     align-items: center;
     background-color: #131921;
-    padding-bottom: 10px;
+    padding: 10px;
 }
 
 .rightheader .right_nav h3{
-    margin-left: 10px;
-    margin-top: 35px;
+    vertical-align: middle;
     font-style: italic;
+    margin-left: 5px;
     font-weight: 500;
     color: #fff;
 }
@@ -30,7 +30,7 @@
     margin-top: 20px;
     margin-left: 10px;
 }
-.nav_btn{
+.rightheader .nav_btn{
     display: flex;
     flex-direction: column;
     margin-left: 40px;
