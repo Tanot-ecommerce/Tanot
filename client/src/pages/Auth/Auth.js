@@ -147,7 +147,8 @@ const Auth = () => {
                            onChange={(e) => {
                              setcPassword(e.target.value);
                            }} />
-					<button onClick={handleSubmitSignup}>Sign up</button>
+                  
+					<button className="auth-btn" onClick={handleSubmitSignup}>Sign up</button>
 				</form>
         <ToastContainer style={{zIndex:"1000"}}/>
 			</div>
@@ -167,7 +168,7 @@ const Auth = () => {
                            onChange={(e) => {
                              setPassword(e.target.value);
                            }} />
-					<button onClick={handleSubmitLogin}>Login</button>
+					<button className="auth-btn" onClick={handleSubmitLogin}>Login</button>
 				</form>
 			</div>
 	</div>
