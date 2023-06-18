@@ -2,6 +2,7 @@ import React from "react";
 import "./Auth.css";
 import { useState, useContext } from "react";
 import { LoginContext } from "../../component/context/ContextProvider";
+import { useNavigate } from "react-router";
 import {ToastContainer, toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 ;// import GoogleIcon from '@mui/icons-material/Google';
@@ -14,6 +15,7 @@ const Auth = () => {
 
   const {account, setAccount} = useContext(LoginContext);
 
+  const navigate = useNavigate();
   //to authenticate login 
   const handleSubmitLogin = async(e) => {
     e.preventDefault();
@@ -50,9 +52,12 @@ const Auth = () => {
     setName("");
     setEmail("");
     setAccount(data);
-    toast.success("Logged In succefully",{
-      position: "top-center",
-    })
+    alert("logged In Succesfully");
+    navigate("/");
+    // toast.success("Logged In succefully",{
+    //   position: "top-center",
+    // })
+    
   }
   }
 
