@@ -1,0 +1,36 @@
+.cart-button {
+    background-color: #fff;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    border: 1px solid black;
+}
+
+.cart-button:hover {
+    background-color: black;
+    color: #fff;
+}
+
+.shop-button {
+    background-color: black;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    border: 1px solid black;
+}
+
+/* .shop-button:hover {
+    background-color: #fff;
+    color: black;
+} */
+
+.label-arial {
+    font-family: Arial;
+    font-style: normal;
+}
