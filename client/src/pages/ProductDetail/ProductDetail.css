@@ -33,36 +33,79 @@
     color: #666;
 }
 
-.dropdown-outer {
-    display: flex;
+.size-select {
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
 
-.dropdown-container {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
+.size-select label {
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    font-size: 1em;
+    color: rgb(56, 56, 56);
+    display: block;
+    margin: 0;
 }
 
-.dropdown-container h5 {
+.size-button {
+    padding: 1.5%;
+    margin: 12px 6px 8px 2px;
+    font-size: 13px;
+    font-family: Avenir Next;
+    font-weight: 600;
+    min-width: 44px;
+    background-color: transparent;
+    text-align: center;
+    cursor: pointer;
+    border: 2px solid #b4b2b2;
+    border-radius: 10%;
+}
+.highlighted-size-btn {
+    padding: 1.5%;
+    margin: 12px 6px 8px 2px;
+    font-size: 13px;
+    font-family: Avenir Next;
+    font-weight: 600;
+    min-width: 44px;
+    background-color: transparent;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 10%;
+    border: 2px solid black;
+}
+.add-to-cart-btn button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.disabled-add-to-cart-btn {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+.detail-promise p,
+.detail-promise-link {
+    display: inline-block;
+    padding-right: 10px;
+    text-align: left;
+    color: rgb(59, 57, 57);
+    text-decoration: none;
+    font-size: 17px;
     margin-right: 5px;
-    font-size: 16px;
 }
-
-.dropdown-select {
-    padding: 5px;
-    font-size: 16px;
-}
-
 hr {
     border: none;
     border-top: 1px solid #ccc;
     margin: 20px 0;
 }
 
-h5 {
+.p-detail-outer .p-right h5 {
     font-size: 18px;
+    margin-top: 25px;
     margin-bottom: 10px;
 }
 
@@ -90,8 +133,9 @@ img {
 }
 
 .large-image img {
-    width: 500px; /* Set the desired width */
-    height: 500px; /* Set the desired height */
+    width: 100%; /* Set the desired width */
+    height: 100%; /* Set the desired height */
+    overflow: hidden;
 }
 .slider-button {
     position: absolute;
@@ -119,6 +163,9 @@ img {
 
 .thumbnail-images {
     display: flex;
+    scroll-behavior: smooth;
+    flex-wrap: nowrap;
+    gap: 10px;
 }
 
 .thumbnail {
@@ -128,22 +175,33 @@ img {
     cursor: pointer;
 }
 
+.thumbnail-images-container {
+    overflow-x: scroll;
+}
+
 /* Responsive Styles */
 
 @media (max-width: 768px) {
     .p-detail-outer {
         flex-direction: column;
+        align-items: center;
     }
 
     .p-left {
         max-width: 100%;
+        flex: 0 0 100%;
         margin-bottom: 20px;
     }
 
     .p-right {
         max-width: 100%;
+        flex: 0 0 100%;
     }
 
+    .product-images {
+        width: 80%; /* Update this line to set the width to 80% of the screen */
+        margin: 0 auto; /* Add this line to center the block horizontally */
+    }
     .dropdown-container {
         flex-direction: column;
         align-items: flex-start;

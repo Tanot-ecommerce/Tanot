@@ -1,36 +1,55 @@
 import React, { useContext } from "react";
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { LoginContext } from "../../component/context/ContextProvider";
 import CircularProgress from "@mui/material/CircularProgress";
-import "../../utils/generalstyles/generalstyles.css";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ImageGallery from "react-image-gallery";
+import Accordation from "../../component/Accordation/Accordation";
+import "react-image-gallery/styles/css/image-gallery.css";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import "./ProductDetail.css";
+import "../../utils/generalstyles/generalstyles.css";
 
 import heart from "../../Images/heart.svg";
+import { colors } from "@mui/material";
 
 const ProductDetail = () => {
+    const images = [
+        {
+            original:
+                "https://assets0.mirraw.com/images/9776044/image_long_webp.webp?1639394927",
+            thumbnail:
+                "https://assets0.mirraw.com/images/9776044/image_long_webp.webp?1639394927",
+        },
+        {
+            original:
+                "https://assets0.mirraw.com/images/9782377/image_long_webp.webp?1639987394",
+            thumbnail:
+                "https://assets0.mirraw.com/images/9782377/image_long_webp.webp?1639987394",
+        },
+        {
+            original:
+                "https://assets0.mirraw.com/images/10692953/MF2705_01_long_webp.webp?1661248766",
+            thumbnail:
+                "https://assets0.mirraw.com/images/10692953/MF2705_01_long_webp.webp?1661248766",
+        },
+    ];
+
     const { account, setAccount } = useContext(LoginContext);
     //take data from backend (value of id in url)
     const { id } = useParams("");
     const Navigate = useNavigate("");
     // console.log(id)
 
-    //to display product in slidebar
-    const [selectedOptionsize, setSelectedOptionsize] = useState("");
-    const [selectedOptionsqty, setSelectedOptionsqty] = useState("");
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
     //to set dynamic image url and fetch dynamic data
-    const [imageUrls, setImageUrl] = useState([]);
     const [indData, setIndData] = useState("");
 
-    // dropdownmenu for quantity and size
-    const handleSelectSize = (event) => {
-        setSelectedOptionsize(event.target.value);
-    };
+    //to heighlite button of size when clicking
+    const [selectedButton, setSelectedButton] = useState(null);
 
-    const handleSelectQty = (event) => {
-        setSelectedOptionsqty(event.target.value);
+    const highlightButton = (buttonIndex) => {
+        setSelectedButton(buttonIndex);
     };
 
     //set loading
@@ -53,7 +72,6 @@ const ProductDetail = () => {
                 console.log("got individual data");
                 setLoading(false);
                 setIndData(data);
-                setImageUrl(data.url);
             }
         };
 
@@ -65,53 +83,35 @@ const ProductDetail = () => {
 
     //add to cart function
     const addtocart = async (id) => {
-        const checkres = await fetch(`/addCart/${id}`, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                indData,
-            }),
-            credentials: "include",
-        });
+        if (!account) alert("please login first to add item in your cart.");
+        else {
+            const checkres = await fetch(`/addCart/${id}`, {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    indData,
+                }),
+                credentials: "include",
+            });
 
-        const data1 = await checkres.json();
-        // console.log(data1 +"ok");
+            const data1 = await checkres.json();
+            // console.log(data1 +"ok");
 
-        if (checkres.status !== 201) {
-            console.log("user invalid");
-            Navigate("/Auth");
-            // alert("user invalid");
-        } else {
-            setAccount(data1);
-            Navigate("/Cart");
+            if (checkres.status !== 201) {
+                console.log("user invalid");
+                Navigate("/Auth");
+                // alert("user invalid");
+            } else {
+                setAccount(data1);
+                Navigate("/Cart");
 
-            // console.log(account);
-            // alert("data added in your cart");
+                // console.log(account);
+                // alert("data added in your cart");
+            }
         }
-    };
-
-    //below code is for imagesliderf
-
-    const displayImage = (imageUrl) => {
-        // Update the image source here
-        const largeImg = document.getElementById("large-img");
-        largeImg.src = imageUrl;
-    };
-
-    const changeImage = (direction) => {
-        if (direction === "next") {
-            setCurrentImageIndex((currentImageIndex + 1) % imageUrls.length);
-        } else if (direction === "previous") {
-            setCurrentImageIndex(
-                (currentImageIndex - 1 + imageUrls.length) % imageUrls.length
-            );
-        }
-
-        const imageUrl = imageUrls[currentImageIndex];
-        displayImage(imageUrl);
     };
 
     return (
@@ -124,121 +124,121 @@ const ProductDetail = () => {
             ) : (
                 <div className="p-detail-outer">
                     <div className="p-left">
-                        <div className="product-images">
-                            <div
-                                className="slider-button left"
-                                onClick={() => changeImage("previous")}
-                            >
-                                &lt;
-                            </div>
-                            <div className="large-image">
-                                <img
-                                    id="large-img"
-                                    src={imageUrls[currentImageIndex]}
-                                    alt="Large Img"
-                                />
-                            </div>
-                            <div
-                                className="slider-button right"
-                                onClick={() => changeImage("next")}
-                            >
-                                &gt;
-                            </div>
-                            <div className="thumbnail-images">
-                                <img
-                                    className="thumbnail"
-                                    src={imageUrls[0]}
-                                    alt="Thumbnail 1"
-                                    onClick={() => displayImage(imageUrls[0])}
-                                />
-                                <img
-                                    className="thumbnail"
-                                    src={imageUrls[1]}
-                                    alt="Thumbnail 2"
-                                    onClick={() => displayImage(imageUrls[1])}
-                                />
-                                <img
-                                    className="thumbnail"
-                                    src={imageUrls[2]}
-                                    alt="Thumbnail 3"
-                                    onClick={() => displayImage(imageUrls[2])}
-                                />
-                                {/* Add more thumbnail images as needed */}
-                            </div>
-                        </div>
+                        <ImageGallery
+                            items={images}
+                            showPlayButton={false}
+                            showIndex={true}
+                        />
                     </div>
                     <div className="p-right">
                         <h3>{indData.title}</h3>
-                        <h3>
-                            Rs {indData.price[0].mrp} (Discount:{" "}
-                            {indData.price.discount})
-                        </h3>
-                        <p>Tax Included.</p>
+                        {/* price and mrp and discount will be showed here */}
+                        <span>
+                            <h3 style={{ display: "inline-block" }}>
+                                &#8377;{" "}
+                            </h3>{" "}
+                        </span>
+                        <span style={{ textDecorationLine: "line-through" }}>
+                            {" "}
+                            &#8377;{" "}
+                        </span>
+                        <span>(40% Off)</span>
+
                         <hr />
-                        <div className="dropdown-outer">
-                            <div className="dropdown-container">
-                                <span>
-                                    <h5>Size: </h5>
-                                </span>
-                                <span>
-                                    <select
-                                        className="dropdown-select"
-                                        value={selectedOptionsize}
-                                        onChange={handleSelectSize}
-                                    >
-                                        <option value="">Select Size</option>
-                                        <option value="S">S</option>
-                                        <option value="M">M</option>
-                                        <option value="L">L</option>
-                                        <option value="XL">XL</option>
-                                        <option value="XXL">XXL</option>
-                                    </select>
-                                </span>
-                                {/* <h3 className="selected-option">Selected Size: {selectedOption}</h3> */}
-                            </div>
-                            <div className="dropdown-container">
-                                <h5>Quantity: </h5>
-                                <select
-                                    className="dropdown-select"
-                                    value={selectedOptionsqty}
-                                    onChange={handleSelectQty}
+
+                        <div className="size-select">
+                            <label>size</label>
+                            <div className="size-buttons">
+                                <button
+                                    className={
+                                        selectedButton === 1
+                                            ? "highlighted-size-btn"
+                                            : "size-button"
+                                    }
+                                    onClick={() => highlightButton(1)}
                                 >
-                                    <option value="">Quantity:</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
-                                {/* <h3 className="selected-option">Selected Size: {selectedOption}</h3> */}
+                                    S
+                                </button>
+                                <button
+                                    className={
+                                        selectedButton === 2
+                                            ? "highlighted-size-btn"
+                                            : "size-button"
+                                    }
+                                    onClick={() => highlightButton(2)}
+                                >
+                                    M
+                                </button>
+                                <button
+                                    className={
+                                        selectedButton === 3
+                                            ? "highlighted-size-btn"
+                                            : "size-button"
+                                    }
+                                    onClick={() => highlightButton(3)}
+                                >
+                                    L
+                                </button>
+                                <button
+                                    className={
+                                        selectedButton === 4
+                                            ? "highlighted-size-btn"
+                                            : "size-button"
+                                    }
+                                    onClick={() => highlightButton(4)}
+                                >
+                                    XL
+                                </button>
+                                <button
+                                    className={
+                                        selectedButton === 5
+                                            ? "highlighted-size-btn"
+                                            : "size-button"
+                                    }
+                                    onClick={() => highlightButton(5)}
+                                >
+                                    XXL
+                                </button>
                             </div>
                         </div>
-                        <p>
-                            <img
-                                src={heart}
-                                alt="heart"
-                                style={{ width: "18px" }}
-                            />
-                            Made In India
-                        </p>
-
+                        <div className="detail-promise">
+                            <p>
+                                <FavoriteBorderIcon
+                                    style={{ marginRight: "5px" }}
+                                />
+                                Made In India
+                            </p>
+                            <Link
+                                to="https://wa.me/+919672332213"
+                                className="detail-promise-link"
+                            >
+                                <p>
+                                    <WhatsAppIcon
+                                        style={{ marginRight: "5px" }}
+                                    />
+                                    Contact Us
+                                </p>
+                            </Link>
+                        </div>
                         <button
-                            className="cart-button"
+                            className={
+                                account
+                                    ? "cart-button"
+                                    : "cart-button disabled-add-to-cart-btn"
+                            }
                             onClick={() => addtocart(indData.id)}
                         >
                             ADD TO CART
                         </button>
-                        <button
-                            className="shop-button"
-                            onClick={() => addtocart(indData.id)}
-                        >
-                            BUY NOW
-                        </button>
                         <hr />
+                        <div className="accordation-items">
+                            <Accordation />
+                        </div>
                         <h5>To Fit Measurment(Inches)</h5>
                         <img
                             src="https://cdn.shopify.com/s/files/1/0275/0713/0416/files/New_Size_Chart_bbf6f145-3f78-4a71-8202-ef10269dead2_480x480.png?v=1659798588"
                             alt="size-chart"
+                            style={{ width: "80%" }}
                         ></img>
                     </div>
                 </div>
