@@ -1,9 +1,34 @@
-.cart-main{
+.cart-main {
     display: flex;
     flex-wrap: wrap;
 }
 
-.cart-left{
+.cart-left {
     flex: 60%;
-    
+}
+
+.cart-item:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        justify-content: flex-start;
+    }
+
+    .card {
+        width: 45%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .container {
+        justify-content: flex-start;
+    }
+
+    .card {
+        width: 90%;
+    }
 }
