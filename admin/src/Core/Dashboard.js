@@ -31,9 +31,9 @@ function Dashboard() {
     setProducts();
     axios({
       method: "get",
-      url: "https://ecommerceappcj.herokuapp.com/api/products/",
+      url: "/getproducts",
     }).then((response) => {
-      setProducts(response.data.products);
+      setProducts(response.data);
     });
   };
 
@@ -41,9 +41,9 @@ function Dashboard() {
     setUsers();
     axios({
       method: "get",
-      url: "https://ecommerceappcj.herokuapp.com/api/users/",
+      url: "/Allusers",
     }).then((response) => {
-      setUsers(response.data.allUsers);
+      setUsers(response.data);
     });
   };
 
@@ -73,32 +73,32 @@ function Dashboard() {
           <p>Here's an overview of your online business.</p>
           <Row>
             <Col>
-              {orders && (
+              {/* {orders && ( */}
                 <Card className="dashboard-card">
                   <RiShoppingCart2Line className="card-icon" />
-                  <h4>{orders.length} Orders</h4>
-                  <p>{orders.length} orders placed</p>
+                  <h4> Orders</h4>
+                  <p> orders placed</p>
                 </Card>
-              )}
+              {/* )} */}
             </Col>
             <Col>
-              {totalRevenue && (
+              {/* {totalRevenue && ( */}
                 <Card className="dashboard-card">
                   <BiRupee className="card-icon" />
                   <h4>
-                    {totalRevenue
+                    {/* {totalRevenue
                       .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "} */}
                     Total Revenue
                   </h4>
                   <p>
-                    {totalRevenue
+                    {/* {totalRevenue
                       .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "} */}
                     revenue generated
                   </p>
                 </Card>
-              )}
+              {/* )} */}
             </Col>
             <Col>
               {products && (
@@ -121,16 +121,6 @@ function Dashboard() {
           </Row>
           <h4>Quick Links</h4>
           <Row>
-            <Col>
-              <Card className="dashboard-action-card">
-                <BsViewList className="action-icon" />
-                <h4>Product Categories</h4>
-                <p>
-                  <Link to="/categories">Click here</Link> to add, remove or
-                  edit categories
-                </p>
-              </Card>
-            </Col>
             <Col>
               <Card className="dashboard-action-card">
                 <IoIosLaptop className="action-icon" />
@@ -172,7 +162,7 @@ function Dashboard() {
                 </p>
               </Card>
             </Col>
-            {/* <Col>
+            <Col>
               <Card className="dashboard-action-card">
                 <RiFeedbackLine className="action-icon" />
                 <h4>Complaints & Feedbacks</h4>
@@ -181,7 +171,7 @@ function Dashboard() {
                   feedbacks
                 </p>
               </Card>
-            </Col> */}
+            </Col>
           </Row>
         </Col>
       </Row>

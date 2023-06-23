@@ -3,9 +3,10 @@ const router = new express.Router();
 const Products = require('../models/productSchema')
 const bcrypt = require("bcryptjs");
 const USER = require('../models/userSchema')
-const authenticate = require("../middleware/authenticate")
+const authenticate = require("../middleware/authenticate");
+const multer = require('multer');
 
-//get productsdata api
+//fetch all products
 router.get('/getproducts', async (req, res) => {
   try {
 
@@ -47,7 +48,7 @@ router.get('/productdetail/:id', async (req, res) => {
     const { id } = req.params;
     // console.log(id);
 
-    const individualData = await Products.findOne({ id: id });
+    const individualData = await Products.findOne({ _id: id });
     // console.log(individualDetail);
     res.status(201).json(individualData);
   } catch (error) {
@@ -214,5 +215,134 @@ router.get("/logout", authenticate, (req,res) =>{
   }catch(error){
     console.log("err for user logout");
   }
+})
+
+
+
+
+
+
+//for admin
+
+
+
+//to add the product
+
+const upload = multer();
+
+
+router.post("/products/add",upload.none(), async (req, res) => {
+  // Access the form data sent from the frontend
+  const title = req.body.title;
+  const mrp = req.body.mrp;
+  const price = req.body.price;
+  const discount = req.body.discount;
+  const S_stock = req.body.S_stock;
+  const M_stock = req.body.M_stock;
+  const L_stock = req.body.L_stock;
+  const XL_stock = req.body.XL_stock;
+  const XXL_stock = req.body.XXL_stock;
+  const category = req.body.category;
+  const description = req.body.description;
+  const images = req.body.images;
+  // console.log(images);
+  // console.log(req.body.images);
+  // console.log(title);
+  // console.log(mrp);
+  // console.log(price);
+  // console.log(discount);
+  // console.log(S_stock);
+  // console.log(M_stock);
+  // console.log(L_stock);
+  // console.log(XL_stock);
+  // console.log(XXL_stock);
+  // console.log(description);
+  // console.log(category);
+  // console.log(req.body);
+  if(!title || !mrp || !price || !discount || !S_stock || !M_stock || !L_stock || !XL_stock || !XXL_stock || !category || !description || !images){
+    res.status(422).json({error:"fill the all data"});
+    console.log("no data available")
+  }
+  try{
+    const finalProduct = new Products({
+        title, mrp, price, discount, S_stock, M_stock, L_stock, XL_stock, XXL_stock, category, description, images
+      });
+
+      const storedata = await finalProduct.save();
+      // console.log(storedata);
+      res.status(201).json(storedata);
+  }catch(err){
+    console.log("Error "+ err.message)
+  }
+})
+
+//to fetch all users
+router.get("/Allusers",async(req,res)=>{
+  try {
+
+    const usersData = await USER.find();
+       console.log(usersData);
+    res.status(201).json(usersData);
+  } catch (error) {
+    console.log("error" + error.message);
+  }
+})
+
+//to delete product from the site
+router.delete("/deleteProduct/:id", async(req,res) => {
+  try{
+    const {id} = req.params;
+
+    //deleting element by its id
+    await Products.deleteOne({ _id: id });
+
+    //req 204 is for req handled succussfully but no content to return.
+    res.status(204).end();
+     console.log("item remove");
+  }catch(err){
+    console.log("error"+err);
+  }
+})
+
+//get single product to edit
+router.get("/products/edit/:id", async(req,res)=>{
+  try{
+  const {id} =req.params;
+  const productdata = await Products.findById(id);
+  // console.log(productdata);
+
+  res.status(201).json(productdata);
+  }catch(err){
+    console.log("err"+err.message);
+  }
+});
+
+
+//to update product
+router.patch("/products/update/:id",upload.none(), async(req, res)=>{
+  try{
+    const {id} =req.params;
+    // console.log(id);
+    const { title, mrp, price, discount, S_stock, M_stock, L_stock, XL_stock, XXL_stock, category, description, images } = req.body;
+    // console.log(req.body.images);
+    const result = await Products.updateOne(
+      { _id: id },
+      { $set: req.body }
+    );
+    res.status(200).json(result);
+  }catch(err){
+    console.log("err"+err.message);
+  }
+})
+
+//fetch user by id
+router.get("/adminuser/:id", async(req,res) =>{
+   try{
+    const {id} = req.params;
+    const individualData = await USER.findOne({ _id: id });
+    res.status(201).json(individualData);
+   }catch(error){
+    console.log("error" + error.message);
+   }
 })
 module.exports = router;

@@ -2,23 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { Card, Col, Form, Row } from "react-bootstrap";
 import Sidebar from "../../Components/Sidebar";
 import axios from "axios";
-
+import { useParams } from "react-router-dom";
 import "./EditProduct.css";
-import { useHistory } from "react-router";
+// import { useNavigate } from "react-router-dom";
 
 function EditProduct(props) {
   const [productData, setProductData] = useState();
-  const [categories, setCategories] = useState([]);
-
-  const [imagePreview, setImagePreview] = useState("");
-  const [image, setImage] = useState(null);
-  const imageButtonRef = useRef();
-  const types = ["image/png", "image/jpeg", "image/jpg"];
-  const productId = props.match.params.productId;
-  const history = useHistory();
-
+  const { productId } = useParams("");
   useEffect(() => {
-    getCategories();
+    // getCategories();
     getProduct();
   }, []);
 
@@ -26,28 +18,19 @@ function EditProduct(props) {
     setProductData();
     axios({
       method: "get",
-      url: `https://ecommerceappcj.herokuapp.com/api/products/product/${productId}`,
+      url: `/products/edit/${productId}`,
     })
       .then((response) => {
-        setProductData(response.data.product);
-        setImagePreview(
-          `https://ecommerceappcj.herokuapp.com/${response.data.product.image}`
-        );
+        // alert("hi");
+        // console.log(response.data);
+        setProductData(response.data);
+        // console.log(productData);
       })
       .catch((err) => {
         console.log("Error : " + err.message);
       });
   };
 
-  const getCategories = () => {
-    setCategories([]);
-    axios({
-      method: "get",
-      url: "https://ecommerceappcj.herokuapp.com/api/categories/",
-    }).then(function (response) {
-      setCategories(response.data.categories);
-    });
-  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -56,59 +39,47 @@ function EditProduct(props) {
     });
   };
 
-  function handleImageChange(event) {
-    let selectedFile = event.target.files[0];
-    if (selectedFile && types.includes(selectedFile.type)) {
-      setImage(selectedFile);
-      setImagePreview(URL.createObjectURL(selectedFile));
-    } else {
-      setImage(null);
-    }
-  }
 
   const editProduct = async (event) => {
     event.preventDefault();
     try {
+      const formData = new FormData();
+      formData.append("title", productData.title);
+      formData.append("mrp", productData.mrp);
+      formData.append("price", productData.price);
+      formData.append("discount", productData.discount);
+      formData.append("S_stock", productData.S_stock);
+      formData.append("M_stock", productData.M_stock);
+      formData.append("L_stock", productData.L_stock);
+      formData.append("XL_stock", productData.XL_stock);
+      formData.append("XXL_stock", productData.XXL_stock);
+      formData.append("category", productData.category);
+      formData.append("description", productData.description);
+      formData.append("images",productData.images);
+      // console.log(formData.get("title"));
+
       axios({
         method: "patch",
-        url: `https://ecommerceappcj.herokuapp.com/api/products/update/${productId}`,
-        data: {
-          name: productData.name,
-          price: productData.price,
-          stockQuantity: productData.stockQuantity,
-          categoryName: productData.category,
-          description: productData.description,
+        url: `/products/update/${productId}`,
+        data: formData,
+        headers: {
+          "Content-Type": "application/json",
         },
       }).then((response) => {
-        if (image) {
-          const formData = new FormData();
-          formData.append("image", image);
-          axios({
-            method: "patch",
-            url: `https://ecommerceappcj.herokuapp.com/api/products/update/image/${productId}`,
-            data: formData,
-          }).then((res) => {
-            setImagePreview();
             setProductData({
-              name: "",
+              title: "",
+              mrp:"",
               price: "",
-              stock: "",
+              discount:"",
+              S_stock: "",
+              M_stock:"",
+              L_stock:"",
+              XL_stock:"",
+              XXL_stock:"",
               category: "",
-              desc: "",
+              description: "",
             });
-            history.push("/products");
-          });
-        } else {
-          setImagePreview();
-          setProductData({
-            name: "",
-            price: "",
-            stock: "",
-            category: "",
-            desc: "",
-          });
-          history.push("/products");
-        }
+            alert("product updated");
       });
     } catch (err) {
       console.log("Error : " + err.message);
@@ -126,7 +97,7 @@ function EditProduct(props) {
           {productData && (
             <p>
               Please fill the product details in the form below to update{" "}
-              <strong>{productData.name}</strong>.
+              <strong>{productData.title}</strong>.
             </p>
           )}
           <Card className="add-product-form-card">
@@ -138,9 +109,22 @@ function EditProduct(props) {
                       <p>Product Name</p>
                       <input
                         type="text"
-                        name="name"
-                        value={productData.name}
+                        name="title"
+                        value={productData.title}
                         onChange={handleChange}
+                        autoComplete="off"
+                      ></input>
+                    </div>
+                  </Col>
+                  <Col>
+                    <div className="add-product-input-div">
+                      <p>Product MRP</p>
+                      <input
+                        type="number"
+                        name="mrp"
+                        value={productData.mrp}
+                        onChange={handleChange}
+                        autoComplete="off"
                       ></input>
                     </div>
                   </Col>
@@ -152,6 +136,19 @@ function EditProduct(props) {
                         name="price"
                         value={productData.price}
                         onChange={handleChange}
+                        autoComplete="off"
+                      ></input>
+                    </div>
+                  </Col>
+                  <Col>
+                    <div className="add-product-input-div">
+                      <p>Discount (in %)</p>
+                      <input
+                        type="number"
+                        name="discount"
+                        value={productData.discount}
+                        onChange={handleChange}
+                        autoComplete="off"
                       ></input>
                     </div>
                   </Col>
@@ -168,30 +165,82 @@ function EditProduct(props) {
                         onChange={handleChange}
                       >
                         <option className="add-product-dropdown-option">
-                          Please select a product category
+                          select option
                         </option>
-                        {categories.map((category) => {
-                          return (
-                            <option
-                              className="add-product-dropdown-option"
-                              value={category.name}
-                            >
-                              {category.name}
-                            </option>
-                          );
-                        })}{" "}
+                        <option className="add-product-dropdown-option">
+                          option 1
+                        </option>
+                        <option className="add-product-dropdown-option">
+                          option 2
+                        </option>
+                        <option className="add-product-dropdown-option">
+                          option 3
+                        </option>
                       </select>
                     </div>
                   </Col>
                   <Col>
                     <div className="add-product-input-div">
-                      <p>Stock Quantity</p>
+                      <p>Stock Quantity (S - Size)</p>
                       <input
                         type="number"
-                        name="stockQuantity"
+                        name="S_stock"
                         min={0}
-                        value={productData.stockQuantity}
+                        value={productData.S_stock}
                         onChange={handleChange}
+                        autoComplete="off"
+                      ></input>
+                    </div>
+                  </Col>
+                  <Col>
+                    <div className="add-product-input-div">
+                      <p>Stock Quantity (M - Size)</p>
+                      <input
+                        type="number"
+                        name="M_stock"
+                        min={0}
+                        value={productData.M_stock}
+                        onChange={handleChange}
+                        autoComplete="off"
+                      ></input>
+                    </div>
+                  </Col>
+                  <Col>
+                    <div className="add-product-input-div">
+                      <p>Stock Quantity (L - Size)</p>
+                      <input
+                        type="number"
+                        name="L_stock"
+                        min={0}
+                        value={productData.L_stock}
+                        onChange={handleChange}
+                        autoComplete="off"
+                      ></input>
+                    </div>
+                  </Col>
+                  <Col>
+                    <div className="add-product-input-div">
+                      <p>Stock Quantity (XL - Size)</p>
+                      <input
+                        type="number"
+                        name="XL_stock"
+                        min={0}
+                        value={productData.XL_stock}
+                        onChange={handleChange}
+                        autoComplete="off"
+                      ></input>
+                    </div>
+                  </Col>
+                  <Col>
+                    <div className="add-product-input-div">
+                      <p>Stock Quantity (XXL - Size)</p>
+                      <input
+                        type="number"
+                        name="XXL_stock"
+                        min={0}
+                        value={productData.XXL_stock}
+                        onChange={handleChange}
+                        autoComplete="off"
                       ></input>
                     </div>
                   </Col>
@@ -206,30 +255,6 @@ function EditProduct(props) {
                         value={productData.description}
                         onChange={handleChange}
                       ></textarea>
-                    </div>
-                  </Col>
-                  <Col>
-                    <div className="add-product-image-div">
-                      <div
-                        onClick={() => {
-                          imageButtonRef.current.click();
-                        }}
-                        className="product-image-div"
-                      >
-                        <Form.Control
-                          ref={imageButtonRef}
-                          style={{ display: "none" }}
-                          type="file"
-                          name="image"
-                          accept="image/*"
-                          onChange={handleImageChange}
-                        />
-                        {imagePreview ? (
-                          <img src={imagePreview} alt="preview" />
-                        ) : (
-                          <p>Add product image</p>
-                        )}
-                      </div>
                     </div>
                   </Col>
                 </Row>
