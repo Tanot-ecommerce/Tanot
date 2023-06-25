@@ -44,9 +44,14 @@ p {
 }
 
 @media (max-width: 800px) {
+    .promise-wrapper {
+        flex-direction: column;
+    }
+
     .promise {
-        flex: 45%;
-        margin-left: 1%;
-        margin-right: 1%;
+        flex: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 20px;
     }
 }

@@ -23,13 +23,13 @@ const Testimonials = () => {
 
     const handlePreviousSlide = () => {
         setCurrentSlide((prevSlide) =>
-            prevSlide === 0 ? testimonialData.length - 1 : prevSlide - 1
+            prevSlide === 0 ? testimonialData.length - 2 : prevSlide - 1
         );
     };
 
     const handleNextSlide = () => {
         setCurrentSlide((prevSlide) =>
-            prevSlide === testimonialData.length - 1 ? 0 : prevSlide + 1
+            prevSlide === testimonialData.length - 2 ? 0 : prevSlide + 1
         );
     };
 

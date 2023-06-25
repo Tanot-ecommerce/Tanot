@@ -127,26 +127,55 @@
     }
 }
 
-@media screen and (max-width: 768px) {
+/* Media Queries */
+
+@media (max-width: 768px) {
+    .navbar-top-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navlogo {
+        margin-bottom: 10px;
+    }
+
+    .nav_searchbaar {
+        width: 100%;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+    .nav_searchbaar input[type="text"] {
+        width: 100%;
+    }
+
+    .nav_searchbaar .search_icon {
+        display: block;
+        margin-left: 10px;
+    }
+
+    .right {
+        display: none;
+    }
+
     .hamburgur {
         display: block;
     }
 
-    .navbar-bottom-container {
-        margin-top: 20px;
+    .bottom-left ul {
+        display: none;
+    }
+}
+
+/* Remaining styles */
+
+@media (min-width: 769px) {
+    .hamburgur {
+        display: none;
     }
 
-    .nav_searchbaar {
-        justify-content: flex-start;
-    }
-
-    .right {
-        flex-direction: column;
-        align-items: flex-end;
-    }
-
-    .right .cart_btn {
-        margin-right: 0;
-        margin-top: 10px;
+    .bottom-left ul {
+        display: flex;
     }
 }

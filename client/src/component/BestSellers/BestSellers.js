@@ -27,12 +27,12 @@ const BestSellers = () => {
             </h2>
             <div className="flex items-center justify-between">
                 <div
-                    className="slider-arrow cursor-pointer left-4"
+                    className="slider-arrow cursor-pointer left-slider left-4"
                     onClick={handlePreviousSlide}
                 >
                     <LeftSliderArrow />
                 </div>
-                <div className="best-sellers-list py-8 flex gap-4">
+                <div className="best-sellers-list py-8 flex gap-4 overflow-x-auto">
                     {visibleProducts.map((product) => (
                         <div
                             key={product.id}
@@ -65,7 +65,7 @@ const BestSellers = () => {
                     ))}
                 </div>
                 <div
-                    className="slider-arrow cursor-pointer"
+                    className="slider-arrow right-slider cursor-pointer"
                     onClick={handleNextSlide}
                 >
                     <RightSliderArrow />

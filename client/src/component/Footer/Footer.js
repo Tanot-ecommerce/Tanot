@@ -36,7 +36,7 @@ const Footer = () => {
 
     return (
         <footer className="footer py-6">
-            <div className="container gap-10 flex mx-auto p-6 space-x-8">
+            <div className="footer-container gap-10 flex mx-auto p-6">
                 <div className="footer-left flex flex-col sm:flex-col justify-center sm:justify-start mb-6 sm:mb-0">
                     {/* Logo image */}
                     <img
@@ -45,7 +45,9 @@ const Footer = () => {
                         className="footer__logo-image w-24 h-auto"
                     />
                     <div className="footer-subscribe mt-6">
-                        <h3 className="text-white text-3xl mb-2">Subscribe</h3>
+                        <h3 className="subscription-text text-white text-3xl mb-2">
+                            Subscribe
+                        </h3>
                         <p className="text-gray-400 text-sm text-left">
                             Subscribe to our newsletter for the latest updates
                             and promotions.
