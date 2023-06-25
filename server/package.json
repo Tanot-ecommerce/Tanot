@@ -23,6 +23,7 @@
     "nodemon": "^2.0.22",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
+    "uuid": "^9.0.0",
     "validator": "^13.9.0"
   }
 }

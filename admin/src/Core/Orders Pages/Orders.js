@@ -19,28 +19,27 @@ function Orders() {
     setOrders();
     axios({
       method: "get",
-      url: "https://ecommerceappcj.herokuapp.com/api/orders/",
+      url: "/admin/Allorders",
     }).then((response) => {
-      setOrders(response.data.allOrders);
+      setOrders(response.data);
+      // console.log(response.data);
     });
   };
 
   const columns = [
     {
-      field: "id",
+      field: "orderId",
       headerName: "Order ID",
       width: 200,
       renderCell: (params) => {
-        return <Link to={`/orders/${params.value}`}>{params.value}</Link>;
+        const id = params.row.id;
+        return <Link to={`/orders/${id}`}>{params.value}</Link>;
       },
     },
     {
       field: "userId",
       headerName: "Customer ID",
       width: 200,
-      renderCell: (params) => {
-        return <Link to={`/users/${params.value}`}>{params.value}</Link>;
-      },
     },
     {
       field: "userName",
@@ -83,9 +82,11 @@ function Orders() {
             <div style={{ height: 600, width: "100%" }}>
               <DataGrid
                 rows={orders.map((order) => {
+                  console.log(order);
                   return {
-                    id: order.id,
-                    userId: order.userId.id,
+                    id: order._id,
+                    orderId: order.orderId,
+                    userId: order.userId.email,
                     userName: order.userId.name,
                     userPhone: order.userId.phone,
                     status:

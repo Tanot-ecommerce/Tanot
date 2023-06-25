@@ -39,12 +39,7 @@ const userSchema = new mongoose.Schema({
     }
   ],
   carts : Array,
-  orders: [{
-    product: String,
-    status: String
-  }],
   contact:String,
-
 });
 
 //Export the model
@@ -81,12 +76,6 @@ userSchema.methods.addCartdata = async function(cart){
   }
 }
 
-//add to order data
-// userSchema.methods.addOrderdata = async function(order){
-//   try{
-//     this.orders = this
-//   }
-// }
 const USER = new mongoose.model("USER", userSchema);
 
 module.exports = USER;

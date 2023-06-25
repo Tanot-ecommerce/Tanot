@@ -81,6 +81,8 @@ function Sidebar() {
               <p>Users</p>
             </div>
           </Link>
+          {/* <Link to="/complaints" className="sidebar-link"> */}
+
           <Link to="/complaints" className="sidebar-link">
             <div
               className={`sidebar-item ${
@@ -90,6 +92,7 @@ function Sidebar() {
               <RiFeedbackLine className="sidebar-icon" />
               <p>Complaints & Feedbacks</p>
             </div>
+
           </Link>
         </div>
         <div className="sidebar-footer-div">
@@ -98,6 +101,6 @@ function Sidebar() {
       </div>
     </div>
   );
-}
+        }
 
 export default Sidebar;

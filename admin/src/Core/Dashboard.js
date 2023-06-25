@@ -51,11 +51,11 @@ function Dashboard() {
     setOrders();
     axios({
       method: "get",
-      url: "https://ecommerceappcj.herokuapp.com/api/orders/",
+      url: "/admin/Allorders",
     }).then((response) => {
-      setOrders(response.data.allOrders);
+      setOrders(response.data);
       let rev = 0;
-      response.data.allOrders.forEach((order) => {
+      response.data.forEach((order) => {
         rev += order.orderAmount;
       });
       setTotalRevenue(rev);
@@ -73,32 +73,32 @@ function Dashboard() {
           <p>Here's an overview of your online business.</p>
           <Row>
             <Col>
-              {/* {orders && ( */}
+              {orders && (
                 <Card className="dashboard-card">
                   <RiShoppingCart2Line className="card-icon" />
-                  <h4> Orders</h4>
-                  <p> orders placed</p>
+                  <h4>{orders.length} Orders </h4>
+                  <p>{orders.length} orders placed</p>
                 </Card>
-              {/* )} */}
+              )}
             </Col>
             <Col>
-              {/* {totalRevenue && ( */}
+              {totalRevenue && (
                 <Card className="dashboard-card">
                   <BiRupee className="card-icon" />
                   <h4>
-                    {/* {totalRevenue
+                    {totalRevenue
                       .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "} */}
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
                     Total Revenue
                   </h4>
                   <p>
-                    {/* {totalRevenue
+                    {totalRevenue
                       .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "} */}
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
                     revenue generated
                   </p>
                 </Card>
-              {/* )} */}
+              )}
             </Col>
             <Col>
               {products && (

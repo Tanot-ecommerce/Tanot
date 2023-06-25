@@ -1,4 +1,4 @@
-import { React, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Navbar.css";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../../Images/logo.png";
@@ -17,6 +17,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { useSelector } from "react-redux";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import ModalForm from "../ModalForm/ModalForm";
 
 const Navbar = () => {
     const { account, setAccount } = useContext(LoginContext);
@@ -32,6 +33,7 @@ const Navbar = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
     const getDetailValidUser = async () => {
         const res = await fetch("/validuser", {
             method: "GET",
@@ -122,6 +124,22 @@ const Navbar = () => {
         getDetailValidUser();
     }, []);
 
+    const handleMyAccountClick = () => {
+        handleClose();
+        navigate("/profile");
+    };
+
+    //to handle model form
+ const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
     return (
         <header className="header-container">
             <div className="navbar-container">
@@ -203,7 +221,7 @@ const Navbar = () => {
                                 "aria-labelledby": "basic-button",
                             }}
                         >
-                            <MenuItem onClick={handleClose}>
+                            <MenuItem onClick={handleMyAccountClick}>
                                 My account
                             </MenuItem>
                             <MenuItem
@@ -212,12 +230,8 @@ const Navbar = () => {
                                     logOutUser();
                                 }}
                             >
-                                {" "}
                                 <LogoutIcon
-                                    style={{
-                                        marginRight: "3",
-                                        fontSize: "16",
-                                    }}
+                                    style={{ marginRight: "3", fontSize: "16" }}
                                 />
                                 Logout
                             </MenuItem>
@@ -244,13 +258,17 @@ const Navbar = () => {
                                 <Link to="/">Home</Link>
                             </li>
                             <li>
-                                <Link to="/Shop">Shop</Link>
+                                <Link to="/products">Products</Link>
                             </li>
                             <li>
-                                <Link to="/About">About</Link>
+                                <Link to="/aboutus">AboutUs</Link>
                             </li>
                             <li>
-                                <Link to="/Contact">Contact</Link>
+                                <Link to="/contact">Contact</Link>
+                            </li>
+                            <li>
+                                <Link onClick={openModal}>Feedback</Link>
+                                <ModalForm isOpen={isModalOpen} onClose={closeModal} />
                             </li>
                         </ul>
                     </div>

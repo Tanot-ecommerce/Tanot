@@ -4,21 +4,23 @@ import "./DisplayProduct.css";
 
 function DisplayProduct(props) {
     const { dataArray } = props;
+    const commaMrp = dataArray.mrp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const commaPrice = dataArray.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
     return (
         <>
-            <Link to={`/productdetail/${dataArray.id}`} className="card">
+            <Link to={`/productdetail/${dataArray._id}`} className="card">
                 <div>
                     <div className="product-img">
-                        <img src={dataArray.url} alt="product-img" />
-                        <p>{dataArray.discount}</p>
+                        <img src={dataArray.images[0]} alt="product-img" />
+                        <p>{dataArray.discount} %off</p>
                     </div>
                     <div className="description">
-                        <h4>{dataArray.title}</h4>
+                        <h4>{dataArray.title} </h4>
                         <div className="price">
-                            <s className="mrp">Rs. {dataArray.price.mrp} Rs</s>
+                            <s className="mrp">Rs. {commaMrp} Rs</s>
                             <span className="realp">
-                                Rs. {dataArray.price.cost} Rs
+                                Rs. {commaPrice} Rs
                             </span>
                         </div>
                     </div>

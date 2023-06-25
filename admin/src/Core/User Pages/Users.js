@@ -22,10 +22,10 @@ function Users() {
     getUsers();
   }, []);
 
-  const getUsers = () => {
+  const getUsers = async () => {
     setUsers([]);
     setFilteredUsers([]);
-    axios({
+    await axios({
       method: "get",
       url: "/Allusers",
     }).then((response) => {
@@ -34,7 +34,7 @@ function Users() {
     });
   };
 
-  const searchQueryChangeHandler = (event) => {
+  const searchQueryChangeHandler = async (event) => {
     event.preventDefault();
     const { value } = event.target;
     setSearchQuery(value);

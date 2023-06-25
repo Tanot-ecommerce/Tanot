@@ -14,15 +14,17 @@ import "./User.css";
 
 function User(props) {
   const [user, setUser] = useState();
+  const [orders, setOrders] = useState([]);
   const userId = props.match.params.userId;
 
   useEffect(() => {
     getUser();
+    getOrders();
   }, []);
 
-  const getUser = () => {
+  const getUser = async() => {
     setUser();
-    axios({
+   await axios({
       method: "get",
       url: `/adminuser/${userId}`,
     }).then((response) => {
@@ -30,6 +32,16 @@ function User(props) {
     });
   };
 
+  const getOrders = async() =>{
+    setOrders([]);
+    await axios({
+      method: "get",
+      url: `/admin/orders/${userId}`,
+    }).then((response) =>{
+      setOrders(response.data);
+      // console.log(response.data);
+    })
+  }
   return (
     <div className="dashboard-parent-div">
       <Row>
@@ -60,8 +72,8 @@ function User(props) {
                 </Col>
                 <Col className="user-orders-col">
                   <h6>Orders</h6>
-                  {/* <div className="orders-div">
-                    {user.orders.map((order) => {
+                  <div className="orders-div">
+                    {orders.map((order) => {
                       return (
                         <Card className="user-order-card">
                           <Row>
@@ -99,7 +111,7 @@ function User(props) {
                         </Card>
                       );
                     })}
-                  </div> */}
+                  </div>
                 </Col>
               </Row>
             </Card>
