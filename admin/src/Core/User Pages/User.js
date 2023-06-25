@@ -14,22 +14,34 @@ import "./User.css";
 
 function User(props) {
   const [user, setUser] = useState();
+  const [orders, setOrders] = useState([]);
   const userId = props.match.params.userId;
 
   useEffect(() => {
     getUser();
+    getOrders();
   }, []);
 
-  const getUser = () => {
+  const getUser = async() => {
     setUser();
-    axios({
+   await axios({
       method: "get",
-      url: `https://ecommerceappcj.herokuapp.com/api/users/${userId}`,
+      url: `/adminuser/${userId}`,
     }).then((response) => {
-      setUser(response.data.user);
+      setUser(response.data);
     });
   };
 
+  const getOrders = async() =>{
+    setOrders([]);
+    await axios({
+      method: "get",
+      url: `/admin/orders/${userId}`,
+    }).then((response) =>{
+      setOrders(response.data);
+      // console.log(response.data);
+    })
+  }
   return (
     <div className="dashboard-parent-div">
       <Row>
@@ -41,31 +53,27 @@ function User(props) {
             <Card className="single-user-card">
               <Row>
                 <Col className="user-details-col">
-                  <img
-                    src={`https://ecommerceappcj.herokuapp.com/${user.image}`}
-                    alt={user.name}
-                  />
                   <h4>{user.name}</h4>
                   <hr />
-                  <p>
+                  {/* <p>
                     <RiHome2Line className="icon" /> {user.address}, {user.city}
                     , {user.state} - {user.pin}
-                  </p>
-                  <p>
+                  </p> */}
+                  {/* <p>
                     <RiPhoneLine className="icon" /> {user.phone}
-                  </p>
+                  </p> */}
                   <p>
                     <RiMailLine className="icon" /> {user.email}
                   </p>
-                  <p>
+                  {/* <p>
                     <RiShoppingCartLine className="icon" />{" "}
                     {user.orders.length.toString()} order(s) placed so far.
-                  </p>
+                  </p> */}
                 </Col>
                 <Col className="user-orders-col">
                   <h6>Orders</h6>
                   <div className="orders-div">
-                    {user.orders.map((order) => {
+                    {orders.map((order) => {
                       return (
                         <Card className="user-order-card">
                           <Row>

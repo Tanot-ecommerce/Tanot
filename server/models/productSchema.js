@@ -3,20 +3,51 @@ const mongoose = require("mongoose"); // Erase if already required
 // Declare the Schema of the Mongo model
 const productSchema = new mongoose.Schema(
   {
-   id:{
-    type: String,
-    required: true
-  },
-   url:Array,
-   title:String,
-   price:[
-     {mrp:Number},
-     {price:Number},
-     {discount:String}
-   ],
-   discount:String,
-   category:String,
-   description:String
+    title: {
+      type:String,
+      required:true,
+    },
+    mrp:{
+      type: Number,
+      required:true,
+    },
+    price: {
+      type: Number,
+      required:true,
+    },
+    discount: {
+      type: Number,
+      required:true,
+    },
+    S_stock: {
+      type: Number,
+      required:true,
+    },
+    M_stock: {
+      type: Number,
+      required:true,
+    },
+    L_stock: {
+      type: Number,
+      required:true,
+    },
+    XL_stock: {
+      type: Number,
+      required:true,
+    },
+    XXL_stock: {
+      type: Number,
+      required:true,
+    },
+    category: {
+      type:String,
+      required:true,
+    },
+    description: {
+      type:String,
+      required:true,
+    },
+    images:[String],
   },
   { timestamps: true }
 );

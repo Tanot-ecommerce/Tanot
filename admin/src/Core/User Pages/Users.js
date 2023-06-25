@@ -22,19 +22,19 @@ function Users() {
     getUsers();
   }, []);
 
-  const getUsers = () => {
+  const getUsers = async () => {
     setUsers([]);
     setFilteredUsers([]);
-    axios({
+    await axios({
       method: "get",
-      url: "https://ecommerceappcj.herokuapp.com/api/users/",
+      url: "/Allusers",
     }).then((response) => {
-      setFilteredUsers(response.data.allUsers);
-      setUsers(response.data.allUsers);
+      setFilteredUsers(response.data);
+      setUsers(response.data);
     });
   };
 
-  const searchQueryChangeHandler = (event) => {
+  const searchQueryChangeHandler = async (event) => {
     event.preventDefault();
     const { value } = event.target;
     setSearchQuery(value);
@@ -57,6 +57,7 @@ function Users() {
   };
 
   return (
+    
     <div className="dashboard-parent-div">
       <Row>
         <Col lg={2}>
@@ -84,21 +85,19 @@ function Users() {
           </Row>
           <hr />
           <Row className="users-row">
-            {filteredUsers.map((user) => {
+          {console.log(filteredUsers)}
+            {
+              
+              filteredUsers.map((user) => {
               return (
                 <Col lg={3}>
                   <Card className="user-card">
-                    <img
-                      src={`https://ecommerceappcj.herokuapp.com/${user.image}`}
-                      alt={user.name}
-                    />
                     <h5>{user.name}</h5>
                     <hr />
                     <p>
                       <a href={`tel:${user.phone}`}>
                         <RiPhoneLine className="user-card-icon" />
                       </a>
-                      {user.phone}
                     </p>
                     <p>
                       <a href={`mailto:${user.email}`}>
@@ -110,7 +109,7 @@ function Users() {
                       <RiHome2Line className="user-card-icon" /> {user.address},{" "}
                       {user.city} - {user.pin}
                     </p>
-                    <Link to={`/users/${user.id}`}>
+                    <Link to={`/users/${user._id}`}>
                       <RiExternalLinkLine className="user-link" />
                     </Link>
                   </Card>

@@ -36,7 +36,7 @@ function Order(props) {
     "Dec",
   ];
   const history = useHistory();
-  const orderId = props.match.params.orderId;
+  const orderId = props.match.params.orderId;  //to retrieve order id
   useEffect(() => {
     getOrder();
   }, []);
@@ -44,18 +44,21 @@ function Order(props) {
   const getOrder = () => {
     axios({
       method: "get",
-      url: `https://ecommerceappcj.herokuapp.com/api/orders/order/${orderId}`,
+      url: `/admin/order/${orderId}`,
     }).then((response) => {
-      setOrder(response.data.order);
-      console.log(response.data.order);
+      setOrder(response.data);
+      // console.log(response.data.productIds);
     });
   };
 
   const updateOrderStatus = (event, status, shippedAt, deliveredAt) => {
     event.preventDefault();
+    // console.log(status+"\n");
+    // console.log(shippedAt+"\n");
+    // console.log(deliveredAt+"\n");
     axios({
       method: "patch",
-      url: `https://ecommerceappcj.herokuapp.com/api/orders/${orderId}`,
+      url: `/admin/orders/${orderId}`,
       data: {
         status: status,
         shippedAt: shippedAt,
@@ -70,7 +73,7 @@ function Order(props) {
     event.preventDefault();
     axios({
       method: "delete",
-      url: `https://ecommerceappcj.herokuapp.com/api/orders/${orderId}`,
+      url: `/admin/orders/${orderId}`,
     }).then(() => {
       history.push("/orders");
     });
@@ -86,12 +89,6 @@ function Order(props) {
           {order && order.userId && (
             <Card className="order-card">
               <Row className="order-user-details">
-                <Col lg={3}>
-                  <img
-                    src={`https://ecommerceappcj.herokuapp.com/${order.userId.image}`}
-                    alt={order.userId.name}
-                  />
-                </Col>
                 <Col>
                   <Row>
                     <Col className="user-detail-col">
@@ -206,37 +203,22 @@ function Order(props) {
                 </Col>
               </Row>
               <div className="order-products-div">
-                {order.products &&
-                  order.products.map((item) => {
+                {order.productIds &&
+                  order.productIds.map((productId) => {
+                    
                     return (
                       <Card className="order-product-card">
                         <Row className="product-card-row">
-                          <Col className="product-image-col">
-                            <img
-                              src={`https://ecommerceappcj.herokuapp.com/${item.productId.image}`}
-                              alt={item.productId.name}
-                            />
-                          </Col>
                           <Col className="product-order-details" lg={10}>
                             <Row>
                               <Col>
-                                <Row>
-                                  <Col lg={2}>
-                                    <p>Product ID :</p>
-                                  </Col>
-                                  <Col>
-                                    <p>
-                                      <strong>{item.productId.id}</strong>
-                                    </p>
-                                  </Col>
-                                </Row>
                                 <Row>
                                   <Col lg={2}>
                                     <p>Name :</p>
                                   </Col>
                                   <Col>
                                     <p>
-                                      <strong>{item.productId.name}</strong>
+                                      <strong>{productId.title}</strong>
                                     </p>
                                   </Col>
                                 </Row>
@@ -248,7 +230,7 @@ function Order(props) {
                                     <p>
                                       <strong>
                                         Rs.{" "}
-                                        {item.productId.price
+                                        {productId.price
                                           .toString()
                                           .replace(
                                             /\B(?=(\d{3})+(?!\d))/g,
@@ -261,11 +243,11 @@ function Order(props) {
                                 </Row>
                                 <Row>
                                   <Col lg={2}>
-                                    <p>Category ID :</p>
+                                    <p>Category :</p>
                                   </Col>
                                   <Col>
                                     <p>
-                                      <strong>{item.productId.category}</strong>
+                                      <strong>{productId.category}</strong>
                                     </p>
                                   </Col>
                                 </Row>
@@ -273,11 +255,11 @@ function Order(props) {
                               <Col>
                                 <Row>
                                   <Col lg={2}>
-                                    <p>Quantity :</p>
+                                    <p>Size : <strong>{productId.size}</strong></p>
                                   </Col>
                                   <Col>
                                     <p>
-                                      <strong>{item.quantity}</strong>
+                                      Quantity :<strong> 1</strong>
                                     </p>
                                   </Col>
                                 </Row>
@@ -289,7 +271,7 @@ function Order(props) {
                                     <p>
                                       <strong>
                                         Rs.&nbsp;
-                                        {item.total
+                                        {productId.price
                                           .toString()
                                           .replace(
                                             /\B(?=(\d{3})+(?!\d))/g,
@@ -307,7 +289,7 @@ function Order(props) {
                                   <Col>
                                     <p>
                                       <strong>
-                                        {item.productId.description}
+                                        {productId.description}
                                       </strong>
                                     </p>
                                   </Col>

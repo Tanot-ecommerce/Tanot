@@ -31,9 +31,9 @@ function Dashboard() {
     setProducts();
     axios({
       method: "get",
-      url: "https://ecommerceappcj.herokuapp.com/api/products/",
+      url: "/getproducts",
     }).then((response) => {
-      setProducts(response.data.products);
+      setProducts(response.data);
     });
   };
 
@@ -41,9 +41,9 @@ function Dashboard() {
     setUsers();
     axios({
       method: "get",
-      url: "https://ecommerceappcj.herokuapp.com/api/users/",
+      url: "/Allusers",
     }).then((response) => {
-      setUsers(response.data.allUsers);
+      setUsers(response.data);
     });
   };
 
@@ -51,11 +51,11 @@ function Dashboard() {
     setOrders();
     axios({
       method: "get",
-      url: "https://ecommerceappcj.herokuapp.com/api/orders/",
+      url: "/admin/Allorders",
     }).then((response) => {
-      setOrders(response.data.allOrders);
+      setOrders(response.data);
       let rev = 0;
-      response.data.allOrders.forEach((order) => {
+      response.data.forEach((order) => {
         rev += order.orderAmount;
       });
       setTotalRevenue(rev);
@@ -76,7 +76,7 @@ function Dashboard() {
               {orders && (
                 <Card className="dashboard-card">
                   <RiShoppingCart2Line className="card-icon" />
-                  <h4>{orders.length} Orders</h4>
+                  <h4>{orders.length} Orders </h4>
                   <p>{orders.length} orders placed</p>
                 </Card>
               )}
@@ -123,16 +123,6 @@ function Dashboard() {
           <Row>
             <Col>
               <Card className="dashboard-action-card">
-                <BsViewList className="action-icon" />
-                <h4>Product Categories</h4>
-                <p>
-                  <Link to="/categories">Click here</Link> to add, remove or
-                  edit categories
-                </p>
-              </Card>
-            </Col>
-            <Col>
-              <Card className="dashboard-action-card">
                 <IoIosLaptop className="action-icon" />
                 <h4>All products</h4>
                 <p>
@@ -172,7 +162,7 @@ function Dashboard() {
                 </p>
               </Card>
             </Col>
-            {/* <Col>
+            <Col>
               <Card className="dashboard-action-card">
                 <RiFeedbackLine className="action-icon" />
                 <h4>Complaints & Feedbacks</h4>
@@ -181,7 +171,7 @@ function Dashboard() {
                   feedbacks
                 </p>
               </Card>
-            </Col> */}
+            </Col>
           </Row>
         </Col>
       </Row>

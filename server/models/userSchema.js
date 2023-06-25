@@ -38,7 +38,8 @@ const userSchema = new mongoose.Schema({
         }
     }
   ],
-  carts : Array
+  carts : Array,
+  contact:String,
 });
 
 //Export the model

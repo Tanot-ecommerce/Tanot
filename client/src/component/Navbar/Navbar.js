@@ -17,6 +17,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { useSelector } from "react-redux";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import ModalForm from "../ModalForm/ModalForm";
 
 const Navbar = () => {
     const { account, setAccount } = useContext(LoginContext);
@@ -127,6 +128,17 @@ const Navbar = () => {
         handleClose();
         navigate("/profile");
     };
+
+    //to handle model form
+ const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
     return (
         <header className="header-container">
@@ -255,7 +267,8 @@ const Navbar = () => {
                                 <Link to="/contact">Contact</Link>
                             </li>
                             <li>
-                                <Link to="/contact">Feedback & Complains</Link>
+                                <Link onClick={openModal}>Feedback</Link>
+                                <ModalForm isOpen={isModalOpen} onClose={closeModal} />
                             </li>
                         </ul>
                     </div>

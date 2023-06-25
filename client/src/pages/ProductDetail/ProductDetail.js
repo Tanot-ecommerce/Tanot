@@ -37,6 +37,7 @@ const ProductDetail = () => {
     ];
 
     const { account, setAccount } = useContext(LoginContext);
+
     //take data from backend (value of id in url)
     const { id } = useParams("");
     const Navigate = useNavigate("");
@@ -44,7 +45,9 @@ const ProductDetail = () => {
 
     //to set dynamic image url and fetch dynamic data
     const [indData, setIndData] = useState("");
-
+    const [objectId, setObjectId] = useState("");
+    const [commaMrp, setCommaMrp] = useState(0);
+    const [commaPrice, setCommaPrice] =useState(0);
     //to heighlite button of size when clicking
     const [selectedButton, setSelectedButton] = useState(null);
 
@@ -65,6 +68,8 @@ const ProductDetail = () => {
             });
 
             const data = await res.json();
+             setObjectId(data._id);
+            // console.log(data._id);
             // console.log(data);
             if (res.status !== 201) {
                 console.log("no individual data available");
@@ -72,6 +77,7 @@ const ProductDetail = () => {
                 console.log("got individual data");
                 setLoading(false);
                 setIndData(data);
+                setCommaMrp(data.mrp);
             }
         };
 
@@ -92,13 +98,14 @@ const ProductDetail = () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    indData,
+                    objectId,
                 }),
                 credentials: "include",
             });
 
             const data1 = await checkres.json();
             // console.log(data1 +"ok");
+           
 
             if (checkres.status !== 201) {
                 console.log("user invalid");
@@ -119,7 +126,7 @@ const ProductDetail = () => {
             {loading ? (
                 <div className="circle">
                     <CircularProgress />
-                    <h2>Loading...</h2>
+                    <h2>Loading Item</h2>
                 </div>
             ) : (
                 <div className="p-detail-outer">
@@ -135,14 +142,14 @@ const ProductDetail = () => {
                         {/* price and mrp and discount will be showed here */}
                         <span>
                             <h3 style={{ display: "inline-block" }}>
-                                &#8377;{" "}
+                                &#8377;{indData.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                             </h3>{" "}
                         </span>
                         <span style={{ textDecorationLine: "line-through" }}>
-                            {" "}
-                            &#8377;{" "}
+                            
+                            &#8377; {indData.mrp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                         </span>
-                        <span>(40% Off)</span>
+                        <span>({indData.discount}% Off)</span>
 
                         <hr />
 
@@ -226,8 +233,7 @@ const ProductDetail = () => {
                                     ? "cart-button"
                                     : "cart-button disabled-add-to-cart-btn"
                             }
-                            onClick={() => addtocart(indData.id)}
-                        >
+                            onClick={() => addtocart(objectId)}>
                             ADD TO CART
                         </button>
                         <hr />

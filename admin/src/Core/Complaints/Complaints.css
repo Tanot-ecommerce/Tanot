@@ -3,6 +3,12 @@
     text-align: left;
 }
 
+.c-delete-btn{
+    background-color:#DC4C64;
+    color: white;
+    cursor: pointer;
+}
+
 .complaints-content h4 {
     font-weight: 600;
     font-size: 32px;
