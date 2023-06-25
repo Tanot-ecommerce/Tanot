@@ -4,6 +4,7 @@ import profilePic from "../../Images/profile.jpg";
 import PersonalInfo from "../PersonalInfo/PersonalInfo";
 import OrderHistory from "../OrderHistory/OrderHistory";
 import Wishlist from "../WishList/WishList";
+import "../../utils/generalstyles/generalstyles.css";
 
 const Profile = () => {
     const [activeSection, setActiveSection] = useState("profile");
@@ -13,15 +14,15 @@ const Profile = () => {
     };
 
     return (
-        <div className="profile flex flex-col text-black min-h-screen">
+        <div className="profile flex flex-col text-black min-h-screen p-8">
             <div className="profile-container newpage-container flex flex-row flex-grow">
                 <div className="profile-left-section w-1/4 pr-2">
-                    <div className="profile-section mt-14 flex flex-col text-black justify-center items-center p-8">
+                    <div className="profile-section mt-8 flex flex-col text-black justify-center items-center py-12">
                         <div className="profile-info text-center  overflow-hidden">
                             <img
                                 src={profilePic}
                                 alt="Profile"
-                                className="object-cover w-148 h-148 rounded-full mb-3"
+                                className="object-cover w-28 h-28 rounded-full mb-3"
                             />
                             <h3 className="text-2xl font-bold my-2">
                                 Anuj Sharma
@@ -79,7 +80,7 @@ const Profile = () => {
                         </div>
                     </div>
                 </div>
-                <div className="vertical-line w-px h-96 bg-white my-auto"></div>
+                <div className="vertical-line w-px bg-black my-auto"></div>
 
                 <div className="profile-right-section w-3/4 pl-2">
                     <div className="p-8">

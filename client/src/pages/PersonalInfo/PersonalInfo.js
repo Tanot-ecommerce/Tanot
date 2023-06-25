@@ -1,96 +1,118 @@
-import React, { useState } from "react";
+import React from "react";
 import clsx from "clsx";
-import profilePic from "../../Images/profile.jpg";
-import PersonalInfo from "../PersonalInfo/PersonalInfo";
-import OrderHistory from "../OrderHistory/OrderHistory";
-import Wishlist from "../WishList/WishList";
 
-const Profile = () => {
-    const [activeSection, setActiveSection] = useState("profile");
-
-    const handleSectionChange = (section) => {
-        setActiveSection(section);
-    };
-
+const PersonalInfo = () => {
     return (
-        <div className="profile flex flex-col text-black min-h-screen">
-            <div className="profile-container newpage-container flex flex-row flex-grow">
-                <div className="profile-left-section w-1/4 pr-2">
-                    <div className="profile-section mt-14 flex flex-col text-white justify-center items-center p-8">
-                        <div className="profile-info text-center  overflow-hidden">
-                            <img
-                                src={profilePic}
-                                alt="Profile"
-                                className="object-cover w-48 h-48 rounded-full mb-3"
+        <section>
+            <div className="user-info-container bg-gray-900 rounded-xl text-white pl-10 py-8 m-6 shadow-md">
+                <div className="order-history-header mb-8">
+                    <h2 className="text-2xl font-bold">Your Information</h2>
+                </div>
+                <div className="flex flex-wrap">
+                    <div className="mb-4 w-1/2 pr-2">
+                        <label className="block mb-2 label-small">Name</label>
+                        <input
+                            type="text"
+                            className={clsx(
+                                "input-field rounded bg-white text-black py-1"
+                            )}
+                        />
+                    </div>
+                    <div className="mb-4 w-1/2 pl-2">
+                        <label className="block mb-2 label-small">Email</label>
+                        <input
+                            type="email"
+                            className={clsx(
+                                "input-field rounded bg-white text-black py-1"
+                            )}
+                        />
+                    </div>
+                </div>
+                <div className="flex flex-wrap">
+                    <div className="mb-4 w-1/2 pr-2">
+                        <label className="block mb-2 label-small">
+                            Date of Birth
+                        </label>
+                        <input
+                            type="date"
+                            className={clsx(
+                                "input-field rounded bg-white text-black py-1"
+                            )}
+                        />
+                    </div>
+                    <div className="mb-4 w-1/2 pl-2 flex flex-col">
+                        <label className="block mb-2 label-small">
+                            Contact
+                        </label>
+                        <div className="relative flex">
+                            <input
+                                type="tel"
+                                className={clsx(
+                                    "input-field-country-code mr-3 w-16 rounded bg-white text-black py-1"
+                                )}
                             />
-                            <h3 className="text-2xl font-bold my-2">
-                                John Snow
-                            </h3>
-                            <p className="text-sm label-arial">
-                                johns@gmail.com
-                            </p>
-                        </div>
-                        <div className="profile-links mt-14 flex flex-col space-y-4 mb-4">
-                            <ul className="text-center text-white label-arial">
-                                <li
-                                    className={clsx(
-                                        "py-1 label-arial cursor-pointer",
-                                        {
-                                            "font-bold":
-                                                activeSection === "profile",
-                                        }
-                                    )}
-                                    onClick={() =>
-                                        handleSectionChange("profile")
-                                    }
-                                >
-                                    Profile Information
-                                </li>
-                                <li
-                                    className={clsx(
-                                        "py-3 label-arial cursor-pointer",
-                                        {
-                                            "font-bold":
-                                                activeSection ===
-                                                "orderHistory",
-                                        }
-                                    )}
-                                    onClick={() =>
-                                        handleSectionChange("orderHistory")
-                                    }
-                                >
-                                    Order History
-                                </li>
-                                <li
-                                    className={clsx(
-                                        "py-3 label-arial cursor-pointer",
-                                        {
-                                            "font-bold":
-                                                activeSection === "wishlist",
-                                        }
-                                    )}
-                                    onClick={() =>
-                                        handleSectionChange("wishlist")
-                                    }
-                                >
-                                    Wishlist
-                                </li>
-                            </ul>
+                            <input
+                                type="tel"
+                                className={clsx(
+                                    "input-field-mobile-number rounded bg-white text-black py-1"
+                                )}
+                            />
                         </div>
                     </div>
                 </div>
-                <div className="vertical-line w-px h-96 bg-white my-auto"></div>
 
-                <div className="profile-right-section w-3/4 pl-2">
-                    <div className="p-8">
-                        {activeSection === "profile" && <PersonalInfo />}
-                        {activeSection === "orderHistory" && <OrderHistory />}
-                        {activeSection === "wishlist" && <Wishlist />}
+                <h2 className="text-2xl font-bold my-4">Address</h2>
+                <div className="flex flex-wrap">
+                    <div className="mb-4 w-1/2 pr-2">
+                        <label className="block mb-2 label-small">
+                            House/Flat Number
+                        </label>
+                        <input
+                            type="text"
+                            className={clsx(
+                                "input-field rounded bg-white text-black py-1"
+                            )}
+                        />
+                    </div>
+                    <div className="mb-4 w-1/2 pl-2">
+                        <label className="block mb-2 label-small">
+                            Apartment
+                        </label>
+                        <input
+                            type="text"
+                            className={clsx(
+                                "input-field rounded bg-white text-black py-1"
+                            )}
+                        />
+                    </div>
+                </div>
+                <div className="flex flex-wrap">
+                    <div className="mb-4 w-1/2 pr-2">
+                        <label className="block mb-2 label-small">
+                            Landmark
+                        </label>
+                        <input
+                            type="text"
+                            className={clsx(
+                                "input-field rounded bg-white text-black py-1"
+                            )}
+                        />
+                    </div>
+                    <div className="mb-4 w-1/2 pl-2">
+                        <label className="block mb-2 label-small">
+                            Pincode
+                        </label>
+                        <input
+                            type="text"
+                            className={clsx(
+                                "input-field rounded bg-white text-black py-1"
+                            )}
+                        />
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     );
 };
 
-export default Profile;
+export default PersonalInfo;
