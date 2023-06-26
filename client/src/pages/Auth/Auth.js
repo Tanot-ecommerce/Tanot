@@ -5,6 +5,7 @@ import { LoginContext } from "../../component/context/ContextProvider";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../utils/generalstyles/generalstyles.css";
+import { useNavigate } from "react-router";
 // import GoogleIcon from '@mui/icons-material/Google';
 
 const Auth = () => {
@@ -12,6 +13,7 @@ const Auth = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [cpassword, setcPassword] = useState("");
+    const navigate = useNavigate("");
 
     const { account, setAccount } = useContext(LoginContext);
 
@@ -48,6 +50,7 @@ const Auth = () => {
             });
         } else {
             // console.log("login data valid");
+            navigate("/");
             setName("");
             setEmail("");
             setAccount(data);

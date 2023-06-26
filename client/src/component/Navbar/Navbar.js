@@ -23,6 +23,7 @@ const Navbar = () => {
     const { account, setAccount } = useContext(LoginContext);
 
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
     const [dropen, setdropen] = useState(false);
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -62,6 +63,8 @@ const Navbar = () => {
     };
 
     const logOutUser = async () => {
+        setLoading(true);
+        // window.location.reload();
         const res2 = await fetch("/logout", {
             method: "GET",
             headers: {
@@ -80,6 +83,7 @@ const Navbar = () => {
         } else {
             console.log("cookies error");
         }
+        setLoading(false);
     };
 
     //for searching
@@ -141,6 +145,7 @@ const Navbar = () => {
   };
 
     return (
+        <>
         <header className="header-container">
             <div className="navbar-container">
                 <div className="navbar-top-container p-5">
@@ -278,6 +283,7 @@ const Navbar = () => {
                 </div>
             </div>
         </header>
+        </>
     );
 };
 

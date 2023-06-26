@@ -5,14 +5,16 @@ import PersonalInfo from "../PersonalInfo/PersonalInfo";
 import OrderHistory from "../OrderHistory/OrderHistory";
 import Wishlist from "../WishList/WishList";
 import "../../utils/generalstyles/generalstyles.css";
+import axios from 'axios';
 
 const Profile = () => {
     const [activeSection, setActiveSection] = useState("profile");
-
+    
     const handleSectionChange = (section) => {
         setActiveSection(section);
     };
 
+ 
     return (
         <div className="profile flex flex-col text-black min-h-screen p-8">
             <div className="profile-container newpage-container flex flex-row flex-grow">

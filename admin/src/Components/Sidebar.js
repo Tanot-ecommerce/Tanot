@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useContext, useEffect} from "react";
 import {
   RiDashboardLine,
   RiShoppingCart2Line,
@@ -7,6 +7,7 @@ import {
   RiFileList3Line,
   RiFeedbackLine,
 } from "react-icons/ri";
+import { LoginContext } from "./contextProvider";
 
 import { IoIosLaptop } from "react-icons/io";
 
@@ -16,6 +17,7 @@ import { Link, useHistory } from "react-router-dom";
 
 function Sidebar() {
   const history = useHistory();
+  const { account, setAccount } = useContext(LoginContext);
 
   const isActive = (history, path) => {
     if (history.location.pathname === path) {
@@ -24,8 +26,36 @@ function Sidebar() {
       return false;
     }
   };
+  setAccount(1);
+  const getDetailValidAdmin = async () => {
+    const res = await fetch("/validadmin", {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        credentials: "include",
+    });
 
+    const data = await res.json();
+    // console.log(data);
+    if (res.status === 201) {
+        console.log("data valid");
+        setAccount(data);
+    } else {
+        console.log("cookies error");
+    }
+};
+
+useEffect(()=>{
+  // setAccount(1);
+  getDetailValidAdmin();
+})
   return (
+    <>
+    {
+      !account && history.push("/Auth")
+    }
     <div className="sidebar-parent-div">
       <div className="sidebar-content-div">
         <div className="sidebar-logo-div">
@@ -94,12 +124,22 @@ function Sidebar() {
             </div>
 
           </Link>
+          <Link to="/Auth" className="sidebar-link">
+            <div
+              className={`sidebar-item ${
+                isActive(history, "/Auth") && "active"
+              }`}
+            >
+              <p>LogIn</p>
+            </div>
+          </Link>
         </div>
         <div className="sidebar-footer-div">
           <p>© Copyright Tanot.com</p>
         </div>
       </div>
     </div>
+    </>
   );
         }
 
