@@ -203,6 +203,7 @@ function Order(props) {
                 </Col>
               </Row>
               <div className="order-products-div">
+              {/* {console.log(order.productIds)} */}
                 {order.productIds &&
                   order.productIds.map((productId) => {
                     

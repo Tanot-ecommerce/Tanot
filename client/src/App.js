@@ -11,7 +11,7 @@ function App() {
     useEffect(() => {
         setTimeout(() => {
             setData(true);
-        }, 1000);
+        }, 2500);
     }, []);
 
     return (

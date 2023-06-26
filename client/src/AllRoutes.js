@@ -7,6 +7,8 @@ import Cart from "./pages/Cart/Cart";
 import ProductDetail from "./pages/ProductDetail/ProductDetail";
 import Profile from "./pages/Profile/Profile";
 import AboutUs from "./pages/AboutUs/AboutUs";
+import Order from "./pages/OrderHistory/Order";
+import Products from "./pages/Products/Products";
 
 const AllRoutes = () => {
     return (
@@ -19,6 +21,8 @@ const AllRoutes = () => {
                 <Route path="/productdetail/:id" element={<ProductDetail />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/aboutus" element={<AboutUs />} />
+                <Route path="/order/:id" element={<Order />} />
+                <Route path="/products" element={<Products />} />
             </Routes>
         </>
     );

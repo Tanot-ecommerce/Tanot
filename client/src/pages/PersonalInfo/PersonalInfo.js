@@ -21,6 +21,7 @@ const PersonalInfo = () => {
                     <div className="mb-4 w-1/2 pl-2">
                         <label className="block mb-2 label-small">Email</label>
                         <input
+                            readOnly
                             type="email"
                             className={clsx(
                                 "input-field rounded bg-white text-black py-1"

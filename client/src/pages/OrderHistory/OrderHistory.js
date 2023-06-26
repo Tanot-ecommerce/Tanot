@@ -1,59 +1,100 @@
-import React from "react";
-import ProductsData from "../../data/ProductsData"; // Assuming ProductsData.js contains the product information
+import React, { useContext, useEffect, useState } from "react";
+import { Col, Row } from "react-bootstrap";
+import { DataGrid } from "@mui/x-data-grid";
+import "./OrderHistory.css";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { LoginContext } from "../../component/context/ContextProvider";
+// import ProductsData from "../../data/ProductsData"; // Assuming ProductsData.js contains the product information
 
 const OrderHistory = () => {
+    const [orders, setOrders] = useState([]);
+    const [pages, setPages] = useState(5);
+    const {account, setAccount} = useContext(LoginContext);
+
+    // console.log(account._id);
+    useEffect(() => {
+      getOrders();
+    }, []);
+  
+    const getOrders = () => {
+      setOrders();
+      axios({
+        method: "get",
+        url: `/orders/${account._id}`,
+      }).then((response) => {
+        setOrders(response.data);
+        // console.log(response.data);
+      });
+    };
+  
+    const columns = [
+      {
+        field: "orderId",
+        headerName: "Order ID",
+        width: 300,
+        renderCell: (params) => {
+          const id = params.row.id;
+          return <Link to={`/order/${id}`} style={{color:"blue"}}>{params.value}</Link>;
+        },
+      },
+      {
+        field: "status",
+        headerName: "Order Status",
+        width: 180,
+      },
+      {
+        field: "orderAmount",
+        headerName: "Order Amount",
+        width: 190,
+      },
+      {
+        field: "orderedAt",
+        headerName: "Order Date",
+        width: 190,
+      },
+    ];
     return (
-        <div className="order-history bg-gray-100 py-6">
-            <div className="order-history-container mx-auto max-w-xl px-4">
-                <div className="order-history-header mb-8">
-                    <h2 className="text-2xl font-bold">Order History</h2>
-                </div>
-                <div className="order-history-body grid grid-cols-2 gap-6">
-                    {ProductsData.map((product, index) => (
-                        <div
-                            className="order-history-item bg-white rounded-lg shadow-md p-6"
-                            key={index}
-                        >
-                            <div className="order-history-item-header mb-4">
-                                <div className="order-history-item-header-left">
-                                    <h3 className="text-lg font-bold">
-                                        Order #{product.orderNumber}
-                                    </h3>
-                                    <p className="text-gray-600">
-                                        Placed on {product.orderDate}
-                                    </p>
-                                </div>
-                                <div className="order-history-item-header-right">
-                                    <p className="text-gray-600">
-                                        Total: ${product.totalPrice}
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="order-history-item-body flex items-center">
-                                <div className="order-history-item-body-left">
-                                    <img
-                                        src={product.image}
-                                        alt="Product"
-                                        className="w-20 h-20 object-full"
-                                    />
-                                </div>
-                                <div className="order-history-item-body-right ml-4">
-                                    <h3 className="text-lg font-bold">
-                                        {product.name}
-                                    </h3>
-                                    <p className="text-gray-600">
-                                        Price: ${product.price}
-                                    </p>
-                                    <p className="text-gray-600">
-                                        Quantity: {product.quantity}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+        <Col className="orders-content" lg={10}>
+          <h4>Orders</h4>
+          <p>Here is the list of all the orders please click on order id to see all details of order.</p>
+          <hr />
+          {orders && (
+            <div style={{ height: 600, width: "100%" }}>
+              <DataGrid
+                rows={orders.map((order) => {
+                  console.log(order);
+                  return {
+                    id: order._id,
+                    orderId: order.orderId,
+                    userId: order.userId.email,
+                    userName: order.userId.name,
+                    userPhone: order.userId.phone,
+                    status:
+                      order.status == "placed"
+                        ? "Placed"
+                        : order.status == "shipped"
+                        ? "Shipped"
+                        : order.status == "delivered"
+                        ? "Delivered"
+                        : "Cancelled",
+                    orderAmount: `Rs. ${order.orderAmount
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}/-`,
+                    orderedAt: order.orderedAt,
+                  };
+                })}
+                columns={columns}
+                pageSize={pages}
+                className="orders-data-grid"
+                rowsPerPageOptions={[5, 10, 15, 20, 25]}
+                onPageSizeChange={(pageSize) => {
+                  setPages(pageSize);
+                }}
+              />
             </div>
-        </div>
+          )}
+        </Col>
     );
 };
 

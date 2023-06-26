@@ -6,7 +6,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require('body-parser');
 // const Products = require('./models/productSchema');
 
-const DefaultData = require("./DefaultData")
+// const DefaultData = require("./DefaultData")
 const cors = require('cors');
 const router = require('./routes/router')
 
