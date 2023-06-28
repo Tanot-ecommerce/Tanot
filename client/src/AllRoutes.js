@@ -9,6 +9,7 @@ import Profile from "./pages/Profile/Profile";
 import AboutUs from "./pages/AboutUs/AboutUs";
 import Order from "./pages/OrderHistory/Order";
 import Products from "./pages/Products/Products";
+import Checkout from "./pages/checkout/Checkout";
 
 const AllRoutes = () => {
     return (
@@ -23,6 +24,7 @@ const AllRoutes = () => {
                 <Route path="/aboutus" element={<AboutUs />} />
                 <Route path="/order/:id" element={<Order />} />
                 <Route path="/products" element={<Products />} />
+                <Route path="/checkout" element={<Checkout />} />
             </Routes>
         </>
     );

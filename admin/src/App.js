@@ -29,7 +29,7 @@ function App() {
             exact
             component={EditProduct}
           />
-          <Route path="/auth" exact component={Auth} />
+          <Route path="/Auth" exact component={Auth} />
         </Switch>
       </Router>
     </div>

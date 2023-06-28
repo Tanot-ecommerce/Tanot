@@ -38,7 +38,7 @@ const submit = async (e) => {
                 history.push("/");
             }
             else{
-                alert("not added");
+                alert("Login falied");
             }
         })
       

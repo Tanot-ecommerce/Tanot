@@ -26,36 +26,33 @@ function Sidebar() {
       return false;
     }
   };
-  setAccount(1);
-  const getDetailValidAdmin = async () => {
-    const res = await fetch("/validadmin", {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
-        credentials: "include",
-    });
-
-    const data = await res.json();
-    // console.log(data);
-    if (res.status === 201) {
-        console.log("data valid");
-        setAccount(data);
-    } else {
-        console.log("cookies error");
-    }
-};
-
-useEffect(()=>{
   // setAccount(1);
-  getDetailValidAdmin();
-})
+//   const getDetailValidAdmin = async () => {
+//     const res = await fetch("/validadmin", {
+//         method: "GET",
+//         headers: {
+//             Accept: "application/json",
+//             "Content-Type": "application/json",
+//         },
+//         credentials: "include",
+//     });
+
+//     const data = await res.json();
+//     // console.log(data);
+//     if (res.status === 201) {
+//         console.log("data valid");
+//         setAccount(data);
+//     } else {
+//         console.log("cookies error");
+//     }
+// };
+
+// useEffect(()=>{
+//   // setAccount(1);
+//   getDetailValidAdmin();
+// })
   return (
     <>
-    {
-      !account && history.push("/Auth")
-    }
     <div className="sidebar-parent-div">
       <div className="sidebar-content-div">
         <div className="sidebar-logo-div">

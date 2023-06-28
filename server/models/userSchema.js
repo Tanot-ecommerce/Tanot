@@ -38,8 +38,18 @@ const userSchema = new mongoose.Schema({
         }
     }
   ],
-  carts : Array,
+  carts : [{
+    product:Object,
+    size:String,
+  }],
   contact:String,
+  addresses:[{
+    name:String,
+    landmart:String,
+    city:String,
+    pincode:Number,
+    state:String,
+  }],
 });
 
 //Export the model
@@ -66,9 +76,12 @@ userSchema.methods.generateAuthToken = async function(){
 }
 
 // add tocart data
-userSchema.methods.addCartdata = async function(cart){
+userSchema.methods.addCartdata = async function(cart,size){
   try{
-   this.carts = this.carts.concat(cart);
+   this.carts = this.carts.concat({
+    product:cart,
+    size:size
+   });
    await this.save();
    return this.carts;
   }catch(error){

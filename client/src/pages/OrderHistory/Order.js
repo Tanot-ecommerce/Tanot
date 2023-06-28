@@ -66,7 +66,7 @@ const Order = () => {
                     </p>
                     <p>
                       <RiPhoneLine className="user-icon" />{" "}
-                      {order.userId.phone}
+                      {order.address.phone}
                     </p>
                     <p>
                       <RiMailLine className="user-icon" />{" "}
@@ -74,12 +74,12 @@ const Order = () => {
                     </p>
                     <p>
                       <RiHome2Line className="user-icon" />{" "}
-                      {order.userId.address}, {order.userId.city} -{" "}
-                      {order.userId.pin}
+                      {order.address.name}, {order.address.landmark} -{" "}
+                      {order.address.city}, ({order.address.pincode})
                     </p>
                     <p>
                       <RiUserLocationLine className="user-icon" />{" "}
-                      {order.userId.state}
+                      {order.address.state}
                     </p>
                   </Col>
                   <Col className="order-detail-col">
@@ -117,7 +117,7 @@ const Order = () => {
             </Row>
             <div className="order-products-div">
               {order.productIds &&
-                order.productIds.map((productId) => {
+                order.productIds.map((productId,index) => {
                   return (
                     <Card className="order-product-card">
                       <Row className="product-card-row">
@@ -167,7 +167,7 @@ const Order = () => {
                             <Col>
                               <Row>
                                 <Col lg={2}>
-                                  <p>Size : <strong>{productId.size}</strong></p>
+                                  <p>Size : <strong>{order.size[0]}</strong></p>
                                 </Col>
                                 <Col>
                                   <p>

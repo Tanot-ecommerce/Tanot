@@ -10,6 +10,7 @@ const authenticateadmin = require("../middleware/authenticateAdmin");
 const Admin = require("../models/adminSchema")
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
+const mongoose = require('mongoose');
 
 //fetch all products
 router.get('/getproducts', async (req, res) => {
@@ -148,15 +149,17 @@ router.post("/addCart/:id", authenticate, async (req, res) => {
   try {
     const { id } = req.params;
     const cart = await Products.findOne({ _id: id });
+    const size = req.body.selectedButton;
+    // console.log(size);
     //  console.log(cart + "cart value");
-
+    // console.log(req.body);
     const userContact = await USER.findOne({ _id: req.userID });
     //  console.log(userContact);
 
     if (userContact) {
-      const cartData = await userContact.addCartdata(cart);
+      const cartData = await userContact.addCartdata(cart,size);
       await userContact.save();
-      console.log(cartData);
+      // console.log(cartData);
       res.status(201).json(userContact);
     } else {
       res.status(401).json({ error: "invalid user" });
@@ -199,7 +202,7 @@ router.delete("/remove/:id", authenticate, async (req, res) => {
 
     req.rootUser.save();
     res.status(201).json(req.rootUser);
-    console.log("item remove");
+    // console.log("item remove");
   } catch (err) {
     console.log("error" + err);
     res.status(400).json(req.rootUser);
@@ -243,15 +246,16 @@ router.post("/add/complaints", authenticate, async (req, res) => {
 // to place order
 router.post("/place/order", authenticate, async (req, res) => {
   try {
-    const { orderAmount, cartData, price } = req.body;
-
+    const { orderAmount, products, price, size, payment, name, phone, landmark, pincode, stat, city} = req.body;
+  //  console.log(products);
+  // console.log(payment);
     // Get the authenticated user
     const userId = req.rootUser._id;
-    const productIds = cartData;
+    const productIds = products.map(idString => new mongoose.Types.ObjectId(idString));
     const orderId = uuidv4();
     const status = "placed";
     // console.log(orderId);
-    // console.log("ok");
+    console.log(productIds);
 
     //DD/MM/YYYY formate
     const currentDate = new Date();
@@ -261,6 +265,15 @@ router.post("/place/order", authenticate, async (req, res) => {
     const formattedDate = `${day}/${month}/${year}`;
 
 
+    //set address object
+    const address = {
+      name:name,
+      phone:phone,
+      landmart:landmark,
+      city:city,
+      pincode:pincode,
+      state:stat,
+     };
     // Create a new order object
     const order = new Orders({
       orderId,
@@ -270,6 +283,9 @@ router.post("/place/order", authenticate, async (req, res) => {
       productIds,
       status,
       price,
+      size,
+      payment:payment,
+      address,
     });
     // console.log("ok");
 
@@ -295,7 +311,7 @@ router.get("/orders/:id",authenticate, async(req,res) =>{
   try{
     const {id} = req.params;
     const userOrders = await Orders.find({ userId: id }).exec()
-    console.log(userOrders);
+    // console.log(userOrders);
     res.status(201).json(userOrders);
   }catch(err){
     console.log("error "+err);
@@ -609,7 +625,7 @@ router.get("/admin/orders/:id",authenticateadmin, async(req,res) =>{
   try{
     const {id} = req.params;
     const userOrders = await Orders.find({ userId: id }).exec();
-    console.log(userOrders);
+    // console.log(userOrders);
     res.status(201).json(userOrders);
   }catch(err){
     console.log("error "+err);

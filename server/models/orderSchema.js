@@ -18,6 +18,16 @@ const AllOrdertSchema = new mongoose.Schema(
     }],
     status:String,
     price:Array,
+    size:Array,
+    payment:String,
+    address:{
+     name:String,
+     phone:Number,
+     landmart:String,
+     city:String,
+     pincode:Number,
+     state:String,
+    },
 },
 { timestamps: true }
 );

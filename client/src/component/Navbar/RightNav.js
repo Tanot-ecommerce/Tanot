@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { LoginContext } from "../context/ContextProvider";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { UserLoginLogo } from "../../utils/assets/svg";
 import { Divider } from "@mui/material";
@@ -20,7 +20,7 @@ const RightNav = ({ logclose, logoutUser }) => {
                     ) : (
                         <UserLoginLogo className="avatar"></UserLoginLogo>
                     )}
-                    {account && <h3>Hello, {account.name.toUpperCase()} </h3>}
+                    {account &&  <Link to="/Profile"> <h3>Hello, {account.name.toUpperCase()} </h3></Link>}
                 </div>
                 <div className="nav_btn" onClick={() => logclose()}>
                     <NavLink to="/">Home</NavLink>

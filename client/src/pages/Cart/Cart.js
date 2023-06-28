@@ -6,6 +6,9 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../utils/generalstyles/generalstyles.css";
+import {Routes, Route } from "react-router-dom";
+import Checkout from "../checkout/Checkout";
+
 
 const Cart = () => {
     const [cartData, setCartData] = useState([]);
@@ -14,6 +17,9 @@ const Cart = () => {
     // to set the current price of orders so that if in future
     // the price of a product changes, it will show the current price
     const [price, setPrice] = useState([]);
+    const [size, setSize] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [orderAmount, setOrderAmount] = useState(1500);
 
     const { account, setAccount } = useContext(LoginContext);
     const navigate = useNavigate();
@@ -37,10 +43,19 @@ const Cart = () => {
                 if (res.status !== 201) {
                     console.log("error");
                 } else {
+                    // console.log(data);
                     setCartData(data.carts);
-                    const keys = data.carts.map((cart) => cart.price); // Replace 'name' with the desired key(s)
-                    setPrice(keys);
-                    // console.log(price);
+
+                    const prices = data.carts.map((cart) => cart.product.price); // Replace 'name' with the desired key(s)
+                    setPrice(prices);
+
+                    const sizes = data.carts.map((cart) => cart.size);   //make array of sizes
+                    setSize(sizes);
+
+                    const products = data.carts.map((cart) => cart.product._id);  //make array of products
+
+                    setProducts([]);
+                    setProducts((prevProducts) => prevProducts.concat(products));
 
                     setLoading(false);
                 }
@@ -50,36 +65,12 @@ const Cart = () => {
         getCartData();
     }, []);
 
-    const placeOrder = async () => {
-        const orderAmount = 10000;
 
-        setLoading(true);
-        const res = await fetch("/place/order", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                orderAmount,
-                cartData,
-                price,
-            }),
-        });
-        const data = await res.json();
-
-        if (res.status === 422 || !data) {
-            toast.warning("Server Error in saving data", {
-                position: "top-center",
-            });
-        } else {
-            setCartData([]);
-            toast.success("Order Placed successfully", {
-                position: "top-center",
-            });
-        }
-        setLoading(false);
+    const redirectToCheckout = () => {
+        setCartData([]);
+        // console.log(products);
+        navigate('/checkout', { state: { orderAmount, products, price, size } });
     };
-
     return (
         <section className="cart-section pt-6 pl-6 pr-2 ">
             <div className="cart-container flex justify-between">
@@ -94,23 +85,24 @@ const Cart = () => {
                     ) : (
                         cartData.map((item) => (
                             <div
-                                key={item._id}
+                                key={item.product._id}
                                 className="cart-item flex justify-between  w-full my-4 p-4 border border-gray-300 rounded-md"
                             >
                                 <div className="cart-product-image">
                                     <img
-                                        src={item.images[0]}
-                                        alt={item.title}
+                                        src={item.product.images[0]}
+                                        alt={item.product.title}
                                         className="w-36 h-32 mb-4"
                                     />
+                                    <p>Selected Size : <strong>{item.size}</strong></p>
                                 </div>
                                 <div className="cart-product-detail flex flex-col">
                                     <h2 className="text-lg font-semibold mb-2">
-                                        {item.title}
+                                        {item.product.title}
                                     </h2>
                                     <p className="text-sm mb-4">
                                         Price: $
-                                        {item.mrp
+                                        {item.product.mrp
                                             .toString()
                                             .replace(
                                                 /\B(?=(\d{3})+(?!\d))/g,
@@ -132,7 +124,7 @@ const Cart = () => {
                     <h2 className="text-2xl">Your Shopping Cart</h2>
                     {cartData.length !== 0 && (
                         <button
-                            onClick={placeOrder}
+                            onClick={redirectToCheckout}
                             className="my-4 px-4 py-2 bg-white text-black font-semibold rounded-md"
                         >
                             Place Order

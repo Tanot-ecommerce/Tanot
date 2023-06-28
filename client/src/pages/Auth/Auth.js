@@ -50,13 +50,14 @@ const Auth = () => {
             });
         } else {
             // console.log("login data valid");
-            navigate("/");
+            
             setName("");
             setEmail("");
             setAccount(data);
             toast.success("Logged In succefully", {
                 position: "top-center",
             });
+            navigate("/");
         }
     };
 
