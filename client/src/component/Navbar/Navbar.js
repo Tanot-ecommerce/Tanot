@@ -20,12 +20,20 @@ import ListItem from "@mui/material/ListItem";
 import ModalForm from "../ModalForm/ModalForm";
 
 const Navbar = () => {
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleOpenMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    };
     const { account, setAccount } = useContext(LoginContext);
 
     const navigate = useNavigate();
     const [dropen, setdropen] = useState(false);
 
-    const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -88,11 +96,25 @@ const Navbar = () => {
     const [liopen, setLiopen] = useState(true);
 
     const [products, setProductsdata] = useState();
+    const [suggestions, setSuggestions] = useState([]);
 
     console.log(products);
+
     const getText = (items) => {
         setText(items);
+
+        if (items === "") {
+            setSuggestions([]);
+            setLiopen(true);
+            return;
+        }
+
         setLiopen(false);
+
+        const filteredSuggestions = products.filter((product) =>
+            product.title.toLowerCase().includes(items.toLowerCase())
+        );
+        setSuggestions(filteredSuggestions);
     };
 
     //fetching product list
@@ -107,12 +129,12 @@ const Navbar = () => {
             });
 
             const data = await res.json();
-            // console.log(data);
+            console.log(data); // Check the value of data
             if (res.status === 201) {
                 console.log("data valid");
                 setProductsdata(data);
             } else {
-                console.log("search cant access product list");
+                console.log("search can't access product list");
             }
         } catch (err) {
             console.error("Error fetching data:", err);
@@ -130,15 +152,15 @@ const Navbar = () => {
     };
 
     //to handle model form
- const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
     return (
         <header className="header-container">
@@ -161,26 +183,26 @@ const Navbar = () => {
                             <SearchIcon id="search" />
                         </div>
 
-                        {/* search filter */}
                         {text && (
-                            <List className="extrasearch" hidden={liopen}>
-                                {products
-                                    .filter((product) =>
-                                        product.title
-                                            .toLowerCase()
-                                            .includes(text.toLowerCase())
-                                    )
-                                    .map((product) => (
-                                        <ListItem key={product.id}>
-                                            <NavLink
-                                                to={`/productdetail/${product.id}`}
-                                                onClick={() => setLiopen(true)}
-                                            >
-                                                {product.title}
-                                            </NavLink>
-                                        </ListItem>
-                                    ))}
-                            </List>
+                            <Menu
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={handleCloseMenu}
+                            >
+                                {suggestions.map((product) => (
+                                    <MenuItem
+                                        key={product.id}
+                                        onClick={() => {
+                                            handleCloseMenu();
+                                            navigate(
+                                                `/productdetail/${product.id}`
+                                            );
+                                        }}
+                                    >
+                                        {product.title}
+                                    </MenuItem>
+                                ))}
+                            </Menu>
                         )}
                     </div>
                     <div className="right">
@@ -209,7 +231,7 @@ const Navbar = () => {
                         )}
                         {!account && (
                             <Link to="/Auth">
-                                <div className="nav_btn">Sign In</div>
+                                <div className="navbar_btn">Sign In</div>
                             </Link>
                         )}
                         <Menu
@@ -237,7 +259,6 @@ const Navbar = () => {
                             </MenuItem>
                         </Menu>
                     </div>
-
                     <Drawer open={dropen} onClose={handledrclose}>
                         <RightNav
                             logclose={handledrclose}
@@ -264,11 +285,14 @@ const Navbar = () => {
                                 <Link to="/aboutus">AboutUs</Link>
                             </li>
                             <li>
-                                <Link to="/contact">Contact</Link>
+                                <Link to="/#footer">Contact</Link>
                             </li>
                             <li>
                                 <Link onClick={openModal}>Feedback</Link>
-                                <ModalForm isOpen={isModalOpen} onClose={closeModal} />
+                                <ModalForm
+                                    isOpen={isModalOpen}
+                                    onClose={closeModal}
+                                />
                             </li>
                         </ul>
                     </div>

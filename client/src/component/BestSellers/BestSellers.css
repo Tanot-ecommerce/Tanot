@@ -4,6 +4,12 @@
     background: #131921;
     background: linear-gradient(to bottom, #131921, #000000);
 }
+.best-sellers-product-item:hover {
+    cursor: pointer;
+    transform: scale(1.01);
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 0 0 20px #ccc;
+}
 
 @media (max-width: 767px) {
     .best-sellers-list {

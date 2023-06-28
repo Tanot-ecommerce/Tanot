@@ -35,7 +35,7 @@ const Footer = () => {
     };
 
     return (
-        <footer className="footer py-6">
+        <footer id="footer" className="footer py-6">
             <div className="footer-container gap-10 flex mx-auto p-6">
                 <div className="footer-left flex flex-col sm:flex-col justify-center sm:justify-start mb-6 sm:mb-0">
                     {/* Logo image */}

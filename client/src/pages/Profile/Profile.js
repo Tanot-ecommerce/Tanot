@@ -4,6 +4,7 @@ import profilePic from "../../Images/profile.jpg";
 import PersonalInfo from "../PersonalInfo/PersonalInfo";
 import OrderHistory from "../OrderHistory/OrderHistory";
 import Wishlist from "../WishList/WishList";
+import "./Profile.css";
 import "../../utils/generalstyles/generalstyles.css";
 
 const Profile = () => {
