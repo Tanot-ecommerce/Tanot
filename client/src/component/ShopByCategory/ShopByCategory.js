@@ -7,7 +7,7 @@ import category3 from "../../Images/krti-typ1.jpg";
 
 const shopByCategory = () => {
     return (
-        <div className="category-container p-6">
+        <div id="shopByCategory" className="category-container p-6">
             <h2 className="category-title text-4xl label-arial text-center my-6">
                 Shop By Category
             </h2>

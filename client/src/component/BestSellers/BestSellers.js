@@ -32,11 +32,11 @@ const BestSellers = () => {
                 >
                     <LeftSliderArrow />
                 </div>
-                <div className="best-sellers-list py-8 flex gap-4 overflow-x-auto">
+                <div className="best-sellers-list p-8 flex gap-4 overflow-x-auto">
                     {visibleProducts.map((product) => (
                         <div
                             key={product.id}
-                            className="best-sellers-product-item bg-white rounded-lg shadow-md flex flex-col justify-between"
+                            className="best-sellers-product-item bg-white rounded-lg cursor-pointer flex flex-col justify-between"
                         >
                             <div className="w-full h-96">
                                 <img

@@ -26,7 +26,7 @@ const Products = () => {
 
     return (
         <>
-            <h1>All Products on website</h1>
+            <h1 style={{fontWeight:"50", fontSize:"30px", textAlign:"center", marginTop:"2%"}}>All Products on website</h1>
             {
                 loading ? (
                     <div className="circle">

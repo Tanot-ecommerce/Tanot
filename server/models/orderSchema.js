@@ -19,6 +19,7 @@ const AllOrdertSchema = new mongoose.Schema(
     status:String,
     price:Array,
     size:Array,
+    quantity:Array,
     payment:String,
     address:{
      name:String,

@@ -258,7 +258,7 @@ function Order(props) {
                                   </Col>
                                   <Col>
                                     <p>
-                                      Quantity :<strong> 1</strong>
+                                      Quantity :<strong> {order.quantity[index]}</strong>
                                     </p>
                                   </Col>
                                 </Row>

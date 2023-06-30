@@ -13,7 +13,7 @@ import {
   RiMoneyDollarCircleLine,
   RiQuestionLine,
 } from "react-icons/ri";
-
+import { CircularProgress } from "@mui/material";
 import "./Order.css";
 import { useNavigate, useParams } from "react-router";
 const Order = () => {
@@ -167,11 +167,11 @@ const Order = () => {
                             <Col>
                               <Row>
                                 <Col lg={2}>
-                                  <p>Size : <strong>{order.size[0]}</strong></p>
+                                  <p>Size : <strong>{order.size[index]}</strong></p>
                                 </Col>
                                 <Col>
                                   <p>
-                                    Quantity :<strong> 1</strong>
+                                    Quantity :<strong>{order.quantity[index]}</strong>
                                   </p>
                                 </Col>
                               </Row>

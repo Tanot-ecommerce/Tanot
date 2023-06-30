@@ -41,6 +41,7 @@ const userSchema = new mongoose.Schema({
   carts : [{
     product:Object,
     size:String,
+    quantity:Number,
   }],
   contact:String,
   addresses:[{
@@ -76,11 +77,12 @@ userSchema.methods.generateAuthToken = async function(){
 }
 
 // add tocart data
-userSchema.methods.addCartdata = async function(cart,size){
+userSchema.methods.addCartdata = async function(cart,size, quantity){
   try{
    this.carts = this.carts.concat({
     product:cart,
-    size:size
+    size:size,
+    quantity: quantity
    });
    await this.save();
    return this.carts;

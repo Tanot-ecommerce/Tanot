@@ -17,6 +17,7 @@ const ProductDetail = () => {
 
     const { account, setAccount } = useContext(LoginContext);
     const [images, setImages] =useState([]);
+    const [loadingText, setLoadingText] =useState("");
     //take data from backend (value of id in url)
     const { id } = useParams("");
     const Navigate = useNavigate("");
@@ -39,6 +40,8 @@ const ProductDetail = () => {
 
     useEffect(() => {
         const getinddata = async () => {
+            setLoading(true)
+            setLoadingText("loading Item...")
             const res = await fetch(`/productdetail/${id}`, {
                 method: "GET",
                 headers: {
@@ -63,8 +66,10 @@ const ProductDetail = () => {
                     thumbnail: link
                   }));
               
+                  setImages([]);
                   setImages(prevImages => [...prevImages, ...newImages]);
             }
+            setLoading(false);
         };
 
         // setTimeout(getinddata,1000);
@@ -75,14 +80,22 @@ const ProductDetail = () => {
 
     //add to cart function
     const addtocart = async (id) => {
-        if (!account) alert("please login first to add item in your cart.");
-
-        if(!selectedButton){
+        if (!account) //alert("please login first to add item in your cart.");
+          {
+            setTimeout(() => {
+                toast.warning("please login first to add item in your cart.", {
+                  position: "top-center",
+                 });
+                 }, 2000); 
+          }
+       else if(!selectedButton){
             toast.warning("please select size", {
                 position: "top-center",
             });
         }
         else {
+            setLoading(true);
+            setLoadingText("adding item in your cart...")
             const checkres = await fetch(`/addCart/${id}`, {
                 method: "POST",
                 headers: {
@@ -105,13 +118,15 @@ const ProductDetail = () => {
                 Navigate("/Auth");
                 // alert("user invalid");
             } else {
-                setAccount(data1);
+                setAccount(data1); 
                 Navigate("/Cart");
 
                 // console.log(account);
                 // alert("data added in your cart");
             }
+          
         }
+        setLoading(false);
     };
 
     return (
@@ -119,7 +134,7 @@ const ProductDetail = () => {
             {loading ? (
                 <div className="circle">
                     <CircularProgress />
-                    <h2>Loading Item</h2>
+                    <h2>{loadingText}</h2>
                 </div>
             ) : (
                 <div className="p-detail-outer">

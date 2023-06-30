@@ -150,6 +150,7 @@ router.post("/addCart/:id", authenticate, async (req, res) => {
     const { id } = req.params;
     const cart = await Products.findOne({ _id: id });
     const size = req.body.selectedButton;
+    const quantity = 1;
     // console.log(size);
     //  console.log(cart + "cart value");
     // console.log(req.body);
@@ -157,7 +158,7 @@ router.post("/addCart/:id", authenticate, async (req, res) => {
     //  console.log(userContact);
 
     if (userContact) {
-      const cartData = await userContact.addCartdata(cart,size);
+      const cartData = await userContact.addCartdata(cart,size, quantity);
       await userContact.save();
       // console.log(cartData);
       res.status(201).json(userContact);
@@ -195,12 +196,14 @@ router.get("/validuser", authenticate, async (req, res) => {
 router.delete("/remove/:id", authenticate, async (req, res) => {
   try {
     const { id } = req.params;
-
+    // console.log(id);
+    // console.log(req.rootUser.carts +"1");
     req.rootUser.carts = req.rootUser.carts.filter((crval) => {
-      return crval.id != id;
+      return crval._id != id;
     });
-
+    // console.log(req.rootUser);
     req.rootUser.save();
+    // console.log(req.rootUser.carts);
     res.status(201).json(req.rootUser);
     // console.log("item remove");
   } catch (err) {
@@ -246,7 +249,7 @@ router.post("/add/complaints", authenticate, async (req, res) => {
 // to place order
 router.post("/place/order", authenticate, async (req, res) => {
   try {
-    const { orderAmount, products, price, size, payment, name, phone, landmark, pincode, stat, city} = req.body;
+    const { orderAmount, products, price, size, quantity, payment, name, phone, landmark, pincode, stat, city} = req.body;
   //  console.log(products);
   // console.log(payment);
     // Get the authenticated user
@@ -284,6 +287,7 @@ router.post("/place/order", authenticate, async (req, res) => {
       status,
       price,
       size,
+      quantity:quantity,
       payment:payment,
       address,
     });

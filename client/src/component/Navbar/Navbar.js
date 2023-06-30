@@ -16,17 +16,30 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useSelector } from "react-redux";
 import List from "@mui/material/List";
+import { useLocation } from 'react-router-dom';
 import ListItem from "@mui/material/ListItem";
 import ModalForm from "../ModalForm/ModalForm";
+import { ToastContainer, toast } from "react-toastify";
+import { CircularProgress } from "@mui/material";
+
 
 const Navbar = () => {
+    const [anchorEl, setAnchorEl] = useState(null);
+
+
+    const handleOpenMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    };
     const { account, setAccount } = useContext(LoginContext);
 
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [dropen, setdropen] = useState(false);
 
-    const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -77,7 +90,12 @@ const Navbar = () => {
         // console.log(data2);
         if (res2.status === 201) {
             console.log("data valid");
-            alert("logout successfully");
+            // alert("logout successfully");
+            setTimeout(() => {
+                toast.success("Logout In succefully", {
+                  position: "top-center",
+                 });
+                 }, 2000); 
             navigate("/");
             setAccount(false);
         } else {
@@ -92,15 +110,30 @@ const Navbar = () => {
     const [liopen, setLiopen] = useState(true);
 
     const [products, setProductsdata] = useState();
+    const [suggestions, setSuggestions] = useState([]);
 
     console.log(products);
+
     const getText = (items) => {
         setText(items);
+
+        if (items === "") {
+            setSuggestions([]);
+            setLiopen(true);
+            return;
+        }
+
         setLiopen(false);
+
+        const filteredSuggestions = products.filter((product) =>
+            product.title.toLowerCase().includes(items.toLowerCase())
+        );
+        setSuggestions(filteredSuggestions);
     };
 
     //fetching product list
     const getProductData = async () => {
+        setLoading(true);
         try {
             const res = await fetch("/getproducts", {
                 method: "GET",
@@ -111,41 +144,65 @@ const Navbar = () => {
             });
 
             const data = await res.json();
-            // console.log(data);
+            // console.log(data); // Check the value of data
             if (res.status === 201) {
                 console.log("data valid");
                 setProductsdata(data);
             } else {
-                console.log("search cant access product list");
+                console.log("search can't access product list");
             }
         } catch (err) {
             console.error("Error fetching data:", err);
         }
+        setLoading(false);
     };
+
+    //cart icon not updating when user place order it should become zero so to do it
+    //im using locatin path when location path will change then it will triggered and 
+    //data of cart will be update.
+    const location = useLocation();
+    const [path, setPath] = useState('');
+
+    useEffect(() => {
+        setPath(location.pathname);
+      }, [location.pathname]);
+
+      //now when path will change then this will be called again
+      useEffect(() =>{
+       getDetailValidUser();
+      },[path])
 
     useEffect(() => {
         getProductData();
-        getDetailValidUser();
     }, []);
 
+
+    
     const handleMyAccountClick = () => {
         handleClose();
         navigate("/profile");
     };
 
     //to handle model form
- const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
     return (
         <>
+        {
+            loading ?(
+            <div className="circle">
+                <CircularProgress />
+                Loading...
+            </div>
+            ):(
         <header className="header-container">
             <div className="navbar-container">
                 <div className="navbar-top-container p-5">
@@ -166,25 +223,18 @@ const Navbar = () => {
                             <SearchIcon id="search" />
                         </div>
 
-                        {/* search filter */}
-                        {text && (
+                        {
+                            text && products &&(
                             <List className="extrasearch" hidden={liopen}>
-                                {products
-                                    .filter((product) =>
-                                        product.title
-                                            .toLowerCase()
-                                            .includes(text.toLowerCase())
-                                    )
-                                    .map((product) => (
-                                        <ListItem key={product.id}>
-                                            <NavLink
-                                                to={`/productdetail/${product.id}`}
-                                                onClick={() => setLiopen(true)}
-                                            >
+                                {
+                                    products.filter(product => product.title.toLowerCase().includes(text.toLowerCase())).map(product => (
+                                        <ListItem key={product._id}>
+                                            <NavLink to={`/productdetail/${product._id}`} onClick={() => {setLiopen(true); setText("");}}>
                                                 {product.title}
                                             </NavLink>
                                         </ListItem>
-                                    ))}
+                                    ))
+                                }
                             </List>
                         )}
                     </div>
@@ -214,7 +264,7 @@ const Navbar = () => {
                         )}
                         {!account && (
                             <Link to="/Auth">
-                                <div className="nav_btn">Sign In</div>
+                                <div className="navbar_btn">Sign In</div>
                             </Link>
                         )}
                         <Menu
@@ -242,7 +292,6 @@ const Navbar = () => {
                             </MenuItem>
                         </Menu>
                     </div>
-
                     <Drawer open={dropen} onClose={handledrclose}>
                         <RightNav
                             logclose={handledrclose}
@@ -269,11 +318,14 @@ const Navbar = () => {
                                 <Link to="/aboutus">AboutUs</Link>
                             </li>
                             <li>
-                                <Link to="/contact">Contact</Link>
+                                <Link to="/#footer">Contact</Link>
                             </li>
                             <li>
                                 <Link onClick={openModal}>Feedback</Link>
-                                <ModalForm isOpen={isModalOpen} onClose={closeModal} />
+                                <ModalForm
+                                    isOpen={isModalOpen}
+                                    onClose={closeModal}
+                                />
                             </li>
                         </ul>
                     </div>
@@ -282,7 +334,10 @@ const Navbar = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </header>
+            )
+        }
         </>
     );
 };
