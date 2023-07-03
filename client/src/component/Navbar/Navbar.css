@@ -30,15 +30,18 @@
     border: 1px solid #fff;
     border-radius: 50px;
 }
+
 .extrasearch {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1;
+    position: absolute !important;
+    top: calc(100%); 
+    left: 7px;
+    /* right: 0; */
+    z-index: 100000;
     background-color: #fff;
-    width: 100%;
+    width: 290px; /* Adjust the width of the suggestion list */
     max-height: 200px;
     overflow-y: auto;
+    border-bottom: 2%;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -82,8 +85,7 @@
     gap: 20px;
 }
 .navbar-bottom-container ul li :hover {
-    color: #bfbfbf;
-    cursor: pointer;
+        cursor: pointer;
 }
 
 .navbar-bottom-container ul li a {
@@ -189,6 +191,9 @@
 
     .bottom-left ul {
         display: none;
+    }
+    .extrasearch {
+        width: 90%;
     }
 }
 

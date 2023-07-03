@@ -13,6 +13,9 @@ import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import ShippingPolicy from "./pages/ShippingPolicy/ShippingPolicy";
 import ReturnPolicy from "./pages/ReturnPolicy/ReturnPolicy";
 import PaymentMethods from "./pages/PaymentMethods/PaymentMethods";
+import Order from "./pages/OrderHistory/Order";
+import Products from "./pages/Products/Products";
+import Checkout from "./pages/checkout/Checkout";
 
 const AllRoutes = () => {
     return (
@@ -31,6 +34,9 @@ const AllRoutes = () => {
                 <Route path="/shipping" element={<ShippingPolicy />} />
                 <Route path="/returns" element={<ReturnPolicy />} />
                 <Route path="/payment" element={<PaymentMethods />} />
+                <Route path="/order/:id" element={<Order />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/checkout" element={<Checkout />} />
             </Routes>
         </>
     );

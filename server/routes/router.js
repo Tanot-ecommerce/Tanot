@@ -6,8 +6,11 @@ const USER = require('../models/userSchema');
 const Orders = require('../models/orderSchema');
 const Complaints = require('../models/complaintSchema');
 const authenticate = require("../middleware/authenticate");
+const authenticateadmin = require("../middleware/authenticateAdmin");
+const Admin = require("../models/adminSchema")
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
+const mongoose = require('mongoose');
 
 //fetch all products
 router.get('/getproducts', async (req, res) => {
@@ -101,7 +104,7 @@ router.post("/register", async (req, res) => {
 })
 
 //Login data
-router.post("/login", async (req, res) => {
+router.post("/login", async(req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -126,8 +129,8 @@ router.post("/login", async (req, res) => {
         const token = await userLogin.generateAuthToken();
         // console.log(token);
 
-        res.cookie("Amazonweb", token, {
-          expires: new Date(Date.now() + 9000000),  //cookie expire in 15 min
+        res.cookie("Tanotweb", token, {
+          expires: new Date(Date.now() + 900000000),  //cookie expire in 15 min
           httpOnly: true
         })
 
@@ -146,15 +149,18 @@ router.post("/addCart/:id", authenticate, async (req, res) => {
   try {
     const { id } = req.params;
     const cart = await Products.findOne({ _id: id });
+    const size = req.body.selectedButton;
+    const quantity = 1;
+    // console.log(size);
     //  console.log(cart + "cart value");
-
+    // console.log(req.body);
     const userContact = await USER.findOne({ _id: req.userID });
     //  console.log(userContact);
 
     if (userContact) {
-      const cartData = await userContact.addCartdata(cart);
+      const cartData = await userContact.addCartdata(cart,size, quantity);
       await userContact.save();
-      console.log(cartData);
+      // console.log(cartData);
       res.status(201).json(userContact);
     } else {
       res.status(401).json({ error: "invalid user" });
@@ -190,14 +196,16 @@ router.get("/validuser", authenticate, async (req, res) => {
 router.delete("/remove/:id", authenticate, async (req, res) => {
   try {
     const { id } = req.params;
-
+    // console.log(id);
+    // console.log(req.rootUser.carts +"1");
     req.rootUser.carts = req.rootUser.carts.filter((crval) => {
-      return crval.id != id;
+      return crval._id != id;
     });
-
+    // console.log(req.rootUser);
     req.rootUser.save();
+    // console.log(req.rootUser.carts);
     res.status(201).json(req.rootUser);
-    console.log("item remove");
+    // console.log("item remove");
   } catch (err) {
     console.log("error" + err);
     res.status(400).json(req.rootUser);
@@ -210,7 +218,7 @@ router.get("/logout", authenticate, async (req, res) => {
     //remove all tokens
     req.rootUser.tokens.length = 0;
 
-    res.clearCookie("Amazonweb", { path: "/" });
+    res.clearCookie("Tanotweb", { path: "/" });
 
     req.rootUser.save();
     res.status(201).json(req.rootUser.tokens);
@@ -241,15 +249,16 @@ router.post("/add/complaints", authenticate, async (req, res) => {
 // to place order
 router.post("/place/order", authenticate, async (req, res) => {
   try {
-    const { orderAmount, cartData, price } = req.body;
-
+    const { orderAmount, products, price, size, quantity, payment, name, phone, landmark, pincode, stat, city} = req.body;
+  //  console.log(products);
+  // console.log(payment);
     // Get the authenticated user
     const userId = req.rootUser._id;
-    const productIds = cartData;
+    const productIds = products.map(idString => new mongoose.Types.ObjectId(idString));
     const orderId = uuidv4();
     const status = "placed";
     // console.log(orderId);
-    // console.log("ok");
+    console.log(productIds);
 
     //DD/MM/YYYY formate
     const currentDate = new Date();
@@ -259,6 +268,15 @@ router.post("/place/order", authenticate, async (req, res) => {
     const formattedDate = `${day}/${month}/${year}`;
 
 
+    //set address object
+    const address = {
+      name:name,
+      phone:phone,
+      landmart:landmark,
+      city:city,
+      pincode:pincode,
+      state:stat,
+     };
     // Create a new order object
     const order = new Orders({
       orderId,
@@ -268,6 +286,10 @@ router.post("/place/order", authenticate, async (req, res) => {
       productIds,
       status,
       price,
+      size,
+      quantity:quantity,
+      payment:payment,
+      address,
     });
     // console.log("ok");
 
@@ -288,6 +310,42 @@ router.post("/place/order", authenticate, async (req, res) => {
   }
 })
 
+//to fetch order list of user
+router.get("/orders/:id",authenticate, async(req,res) =>{
+  try{
+    const {id} = req.params;
+    const userOrders = await Orders.find({ userId: id }).exec()
+    // console.log(userOrders);
+    res.status(201).json(userOrders);
+  }catch(err){
+    console.log("error "+err);
+  }
+})
+
+//to get detail of order
+router.get("/order/:id",authenticate, async(req, res) =>{
+  try{
+    const {id}  = req.params;
+    // console.log(id);
+    const order = await Orders.findOne({ _id: id}).populate({
+      path: "userId",
+      select: "name email", // Specify the fields you want to include from the user document
+    }).populate({
+      path: "productIds", // Replace "anotherCollection" with the name of the collection you want to populate
+      select: "title mrp price category S_stock M_stock L_stock XL_stock XXL_stock description", // Specify the fields you want to include from the anotherCollection document
+    });
+    res.status(201).json(order);
+  }catch(err){
+    console.log("error "+err);
+  }
+})
+
+
+
+
+
+
+
 
 
 
@@ -296,14 +354,65 @@ router.post("/place/order", authenticate, async (req, res) => {
 
 //for admin
 
+//to login admin
+router.post("/adminlogin", async (req, res) => {
+  const { email, password } = req.body;
+//  console.log(password);
+  // console.log(email);
+  if (!email || !password) {
+    res.status(400).json({ error: "fill all data" })
+  };
 
+  try {
+
+
+    const adminLogin = await Admin.findOne({ email: email });
+    
+    if (adminLogin) {
+     
+      const isMatch =await bcrypt.compare(password, adminLogin.password);
+      //  console.log(isMatch);
+
+      if (!isMatch) {
+        res.status(400).json({ error: "Invalid credential" })
+      }
+      else {
+        //token generate
+        // console.log(email);
+        const token = await adminLogin.generateAuthToken();
+        // console.log(token);
+      //  console.log(res);
+        res.cookie("admintanot", token, {
+          expires: new Date(Date.now() + 9000000000),  //cookie expire in 15 min
+          httpOnly: true
+        })
+        // console.log(req.cookies);
+        res.status(201).json(adminLogin)
+      }
+    } else {
+      res.status(400).json({ error: "user not exist" });
+    }
+  } catch (error) {
+    res.status(400).json({ error: "Invalid details" })
+  }
+});
+
+//get valid admin
+router.get("/validadmin", authenticateadmin, async (req, res) => {
+  try {
+    const vailduserone = await Admin.findOne({ _id: req.userID });
+    res.status(201).json(vailduserone);
+  } catch (error) {
+    console.log("error in cartitems" + error.message);
+  }
+})
 
 //to add the product
 
 const upload = multer();
 
 
-router.post("/products/add", upload.none(), async (req, res) => {
+router.post("/products/add", upload.none(),authenticateadmin, async (req, res) => {
   // Access the form data sent from the frontend
   const title = req.body.title;
   const mrp = req.body.mrp;
@@ -351,7 +460,7 @@ router.post("/products/add", upload.none(), async (req, res) => {
 })
 
 //to fetch all users
-router.get("/Allusers", async (req, res) => {
+router.get("/Allusers",authenticateadmin, async (req, res) => {
   try {
 
     const usersData = await USER.find();
@@ -363,7 +472,7 @@ router.get("/Allusers", async (req, res) => {
 })
 
 //to delete product from the site
-router.delete("/deleteProduct/:id", async (req, res) => {
+router.delete("/deleteProduct/:id",authenticateadmin, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -379,7 +488,7 @@ router.delete("/deleteProduct/:id", async (req, res) => {
 })
 
 //get single product to edit
-router.get("/products/edit/:id", async (req, res) => {
+router.get("/products/edit/:id",authenticateadmin, async (req, res) => {
   try {
     const { id } = req.params;
     const productdata = await Products.findById(id);
@@ -393,7 +502,7 @@ router.get("/products/edit/:id", async (req, res) => {
 
 
 //to update product
-router.patch("/products/update/:id", upload.none(), async (req, res) => {
+router.patch("/products/update/:id",authenticateadmin, upload.none(), async (req, res) => {
   try {
     const { id } = req.params;
     // console.log(id);
@@ -410,7 +519,7 @@ router.patch("/products/update/:id", upload.none(), async (req, res) => {
 })
 
 //fetch user by id
-router.get("/adminuser/:id", async (req, res) => {
+router.get("/adminuser/:id",authenticateadmin, async (req, res) => {
   try {
     const { id } = req.params;
     const individualData = await USER.findOne({ _id: id });
@@ -421,7 +530,7 @@ router.get("/adminuser/:id", async (req, res) => {
 })
 
 //fetch complaints
-router.get("/admin/complaints", async (req, res) => {
+router.get("/admin/complaints",authenticateadmin, async (req, res) => {
   try {
     const complaints = await Complaints.find();
     res.status(201).json(complaints);
@@ -447,7 +556,7 @@ router.delete("/admin/complaint/:id", async (req, res) => {
 })
 
 //to get all orders list 
-router.get("/admin/Allorders", async (req, res) => {
+router.get("/admin/Allorders",authenticateadmin, async (req, res) => {
   try {
     const allOrders = await Orders.find().populate({
       path: "userId",
@@ -460,7 +569,7 @@ router.get("/admin/Allorders", async (req, res) => {
 })
 
 //to get a single order to update its status
-router.get("/admin/order/:id", async (req, res) => {
+router.get("/admin/order/:id",authenticateadmin, async (req, res) => {
   try {
 
     const { id } = req.params;
@@ -479,7 +588,7 @@ router.get("/admin/order/:id", async (req, res) => {
 })
 
 //to update order status
-router.patch("/admin/orders/:id", async (req, res) => {
+router.patch("/admin/orders/:id",authenticateadmin, async (req, res) => {
   try {
     const { id } = req.params;
     const { status, shippedAt, deliveredAt } = req.body;
@@ -500,7 +609,7 @@ router.patch("/admin/orders/:id", async (req, res) => {
   }
 });
 
-router.delete("/admin/orders/:id", async(req,res)=>{
+router.delete("/admin/orders/:id",authenticateadmin, async(req,res)=>{
   try{
     const { id } = req.params;
 
@@ -516,14 +625,39 @@ router.delete("/admin/orders/:id", async(req,res)=>{
 })
 
 //to fetch order by userid for admin
-router.get("/admin/orders/:id", async(req,res) =>{
+router.get("/admin/orders/:id",authenticateadmin, async(req,res) =>{
   try{
     const {id} = req.params;
     const userOrders = await Orders.find({ userId: id }).exec();
-    console.log(userOrders);
+    // console.log(userOrders);
     res.status(201).json(userOrders);
   }catch(err){
     console.log("error "+err);
   }
 })
+
+
+//to register admin
+// router.post("/adminregister",async(req,res) =>{
+//   const {email, password} = req.body;
+// //  console.log(email);
+//   try {
+//     // const preuser = await USER.findOne({ email: email });
+
+//       const finaluser = new Admin({
+//          email, password
+//       });
+
+//       //password hashing process
+
+
+//       const storedata = await finaluser.save();
+//       // console.log(storedata);
+
+//       res.status(201).json(storedata);
+//   } catch (error) {
+//     console.log("Error " + error.message)
+//   }
+// })
+
 module.exports = router;

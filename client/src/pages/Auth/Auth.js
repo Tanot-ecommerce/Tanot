@@ -5,6 +5,9 @@ import { LoginContext } from "../../component/context/ContextProvider";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../utils/generalstyles/generalstyles.css";
+import { useNavigate } from "react-router";
+import CircularProgress from "@mui/material/CircularProgress";
+
 // import GoogleIcon from '@mui/icons-material/Google';
 
 const Auth = () => {
@@ -12,12 +15,15 @@ const Auth = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [cpassword, setcPassword] = useState("");
+    const navigate = useNavigate("");
+    const [loading, setLoading] = useState(false);
 
     const { account, setAccount } = useContext(LoginContext);
 
     //to authenticate login
     const handleSubmitLogin = async (e) => {
         e.preventDefault();
+        setLoading(true);
         if (email === "") {
             toast.warning("please enter Email", {
                 position: "top-center",
@@ -48,17 +54,24 @@ const Auth = () => {
             });
         } else {
             // console.log("login data valid");
+            
             setName("");
             setEmail("");
             setAccount(data);
-            toast.success("Logged In succefully", {
-                position: "top-center",
-            });
+            setTimeout(() => {
+             toast.success("Logged In succefully", {
+               position: "top-center",
+              });
+              }, 2000); 
+            
+            navigate("/");
         }
+        setLoading(false);
     };
 
     const handleSubmitSignup = async (e) => {
         e.preventDefault();
+        setLoading(true);
         if (name === "") {
             toast.warning("please enter name", {
                 position: "top-center",
@@ -99,7 +112,7 @@ const Auth = () => {
             });
         } else {
             // alert("data successfully added");
-            toast.success("data succefully added", {
+            toast.success("Registered succefully", {
                 position: "top-center",
             });
             setName("");
@@ -107,10 +120,18 @@ const Auth = () => {
             setPassword("");
             setcPassword("");
         }
+        setLoading(false);
     };
 
     return (
         <>
+        {
+            loading ? (
+            <div className="circle">
+                    <CircularProgress />
+                    <h2>Processing...</h2>
+                </div> ):
+             (
             <div className="auth-container">
                 <div className="main">
                     <input type="checkbox" id="chk" aria-hidden="true" />
@@ -190,6 +211,7 @@ const Auth = () => {
                     </div>
                 </div>
             </div>
+             )}
         </>
     );
 };

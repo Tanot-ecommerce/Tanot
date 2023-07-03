@@ -10,34 +10,14 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import "./ProductDetail.css";
 import "../../utils/generalstyles/generalstyles.css";
-
-import heart from "../../Images/heart.svg";
-import { colors } from "@mui/material";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProductDetail = () => {
-    const images = [
-        {
-            original:
-                "https://assets0.mirraw.com/images/9776044/image_long_webp.webp?1639394927",
-            thumbnail:
-                "https://assets0.mirraw.com/images/9776044/image_long_webp.webp?1639394927",
-        },
-        {
-            original:
-                "https://assets0.mirraw.com/images/9782377/image_long_webp.webp?1639987394",
-            thumbnail:
-                "https://assets0.mirraw.com/images/9782377/image_long_webp.webp?1639987394",
-        },
-        {
-            original:
-                "https://assets0.mirraw.com/images/10692953/MF2705_01_long_webp.webp?1661248766",
-            thumbnail:
-                "https://assets0.mirraw.com/images/10692953/MF2705_01_long_webp.webp?1661248766",
-        },
-    ];
 
     const { account, setAccount } = useContext(LoginContext);
-
+    const [images, setImages] =useState([]);
+    const [loadingText, setLoadingText] =useState("");
     //take data from backend (value of id in url)
     const { id } = useParams("");
     const Navigate = useNavigate("");
@@ -46,13 +26,13 @@ const ProductDetail = () => {
     //to set dynamic image url and fetch dynamic data
     const [indData, setIndData] = useState("");
     const [objectId, setObjectId] = useState("");
-    const [commaMrp, setCommaMrp] = useState(0);
-    const [commaPrice, setCommaPrice] =useState(0);
+
     //to heighlite button of size when clicking
     const [selectedButton, setSelectedButton] = useState(null);
 
-    const highlightButton = (buttonIndex) => {
-        setSelectedButton(buttonIndex);
+    const highlightButton = (size) => {
+        setSelectedButton(size);
+        
     };
 
     //set loading
@@ -60,6 +40,8 @@ const ProductDetail = () => {
 
     useEffect(() => {
         const getinddata = async () => {
+            setLoading(true)
+            setLoadingText("loading Item...")
             const res = await fetch(`/productdetail/${id}`, {
                 method: "GET",
                 headers: {
@@ -77,8 +59,17 @@ const ProductDetail = () => {
                 console.log("got individual data");
                 setLoading(false);
                 setIndData(data);
-                setCommaMrp(data.mrp);
+
+                //set images
+                const newImages = data.images.map(link => ({
+                    original: link,
+                    thumbnail: link
+                  }));
+              
+                  setImages([]);
+                  setImages(prevImages => [...prevImages, ...newImages]);
             }
+            setLoading(false);
         };
 
         // setTimeout(getinddata,1000);
@@ -89,8 +80,22 @@ const ProductDetail = () => {
 
     //add to cart function
     const addtocart = async (id) => {
-        if (!account) alert("please login first to add item in your cart.");
+        if (!account) //alert("please login first to add item in your cart.");
+          {
+            setTimeout(() => {
+                toast.warning("please login first to add item in your cart.", {
+                  position: "top-center",
+                 });
+                 }, 2000); 
+          }
+       else if(!selectedButton){
+            toast.warning("please select size", {
+                position: "top-center",
+            });
+        }
         else {
+            setLoading(true);
+            setLoadingText("adding item in your cart...")
             const checkres = await fetch(`/addCart/${id}`, {
                 method: "POST",
                 headers: {
@@ -99,6 +104,7 @@ const ProductDetail = () => {
                 },
                 body: JSON.stringify({
                     objectId,
+                    selectedButton
                 }),
                 credentials: "include",
             });
@@ -112,13 +118,15 @@ const ProductDetail = () => {
                 Navigate("/Auth");
                 // alert("user invalid");
             } else {
-                setAccount(data1);
+                setAccount(data1); 
                 Navigate("/Cart");
 
                 // console.log(account);
                 // alert("data added in your cart");
             }
+          
         }
+        setLoading(false);
     };
 
     return (
@@ -126,7 +134,7 @@ const ProductDetail = () => {
             {loading ? (
                 <div className="circle">
                     <CircularProgress />
-                    <h2>Loading Item</h2>
+                    <h2>{loadingText}</h2>
                 </div>
             ) : (
                 <div className="p-detail-outer">
@@ -158,51 +166,51 @@ const ProductDetail = () => {
                             <div className="size-buttons">
                                 <button
                                     className={
-                                        selectedButton === 1
+                                        selectedButton === "S"
                                             ? "highlighted-size-btn"
                                             : "size-button"
                                     }
-                                    onClick={() => highlightButton(1)}
+                                    onClick={() => highlightButton("S")}
                                 >
                                     S
                                 </button>
                                 <button
                                     className={
-                                        selectedButton === 2
+                                        selectedButton === "M"
                                             ? "highlighted-size-btn"
                                             : "size-button"
                                     }
-                                    onClick={() => highlightButton(2)}
+                                    onClick={() => highlightButton("M")}
                                 >
                                     M
                                 </button>
                                 <button
                                     className={
-                                        selectedButton === 3
+                                        selectedButton === "L"
                                             ? "highlighted-size-btn"
                                             : "size-button"
                                     }
-                                    onClick={() => highlightButton(3)}
+                                    onClick={() => highlightButton("L")}
                                 >
                                     L
                                 </button>
                                 <button
                                     className={
-                                        selectedButton === 4
+                                        selectedButton === "XL"
                                             ? "highlighted-size-btn"
                                             : "size-button"
                                     }
-                                    onClick={() => highlightButton(4)}
+                                    onClick={() => highlightButton("XL")}
                                 >
                                     XL
                                 </button>
                                 <button
                                     className={
-                                        selectedButton === 5
+                                        selectedButton === "XXL"
                                             ? "highlighted-size-btn"
                                             : "size-button"
                                     }
-                                    onClick={() => highlightButton(5)}
+                                    onClick={() => highlightButton("XXL")}
                                 >
                                     XXL
                                 </button>
@@ -248,7 +256,10 @@ const ProductDetail = () => {
                         ></img>
                     </div>
                 </div>
-            )}
+            )
+           
+            }
+            <ToastContainer />
         </>
     );
 };

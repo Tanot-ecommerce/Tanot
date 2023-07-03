@@ -9,6 +9,7 @@ import AddProduct from "./Core/Product Pages/AddProduct";
 import EditProduct from "./Core/Product Pages/EditProduct";
 import User from "./Core/User Pages/User";
 import Order from "./Core/Orders Pages/Order";
+import Auth from "./Core/Auth/Auth";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             exact
             component={EditProduct}
           />
+          <Route path="/Auth" exact component={Auth} />
         </Switch>
       </Router>
     </div>

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Avatar } from "@mui/material";
 import { grey, deepPurple } from "@mui/material/colors";
 import { LoginContext } from "../context/ContextProvider";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Badge from "@mui/material/Badge";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -29,7 +29,7 @@ const RightNav = ({ logclose, logoutUser }) => {
         <>
             <div className="rightheader">
                 <div className="right_nav flex justify-between">
-                    {account && (
+                    {account ? (
                         <div className="user-info">
                             <div className="avatar2 flex items-center justify-center">
                                 {account.profilePicture ? (
@@ -45,10 +45,16 @@ const RightNav = ({ logclose, logoutUser }) => {
                                         {account.name[0].toUpperCase()}
                                     </Avatar>
                                 )}
-                                <h3>Hello, {account.name.toUpperCase()} </h3>
-                            </div>
+                                {account && <Link to="/Profile"> <h3>Hello, {account.name.toUpperCase()} </h3></Link>}                            </div>
                         </div>
-                    )}
+                    ) : (
+                        <Avatar
+                            sx={{ bgcolor: grey[800] }}
+                            alt="profile-icon"
+                        >
+                        </Avatar>
+                    )
+                    }
                     {account && (
                         <NavLink to="/Cart">
                             <div className="cart_btn">
@@ -61,6 +67,7 @@ const RightNav = ({ logclose, logoutUser }) => {
                             </div>
                         </NavLink>
                     )}
+
                 </div>
 
                 <div className="nav_btn" onClick={() => logclose()}>
@@ -89,14 +96,17 @@ const RightNav = ({ logclose, logoutUser }) => {
                     )}
 
                     <Divider style={{ width: "100%", marginLeft: "-20px" }} />
-                    <li style={{ listStyleType: "none" }}>
-                        <button
+                    {/* <li style={{ listStyleType: "none" }}>
+                        <Link
                             className="bg-black text-white rounded px-3 py-2 my-4"
-                            onClick={openModal}
-                        >
+                            style={{zIndex:"5000"}}
+                            onClick={openModal}>
                             Feedback
-                        </button>
-                    </li>
+                        </Link>
+                        <ModalForm
+                            isOpen={isModalOpen}
+                            onClose={closeModal}/>
+                    </li> */}
 
                     {account ? (
                         <div className="flag mt-4">

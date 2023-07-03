@@ -25,7 +25,7 @@
 
 .cart-item:hover {
     cursor: pointer;
-    transform: scale(1.05);
+    transform: scale(1.012);
     transition: transform 0.3s ease-in-out;
     box-shadow: 0 0 50px #ccc;
 }

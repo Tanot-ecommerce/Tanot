@@ -9,8 +9,8 @@ const PersonalInfo = () => {
                 <div className="order-history-header mb-8">
                     <h2 className="text-2xl font-bold">Your Information</h2>
                 </div>
-                <div className="flex flex-wrap">
-                    <div className="mb-4 w-1/2 pr-2">
+                <div className="flex flex-wrap ">
+                    <div className="mb-4 w-1/2 pr-2 input-div">
                         <label className="block mb-2 label-small">Name</label>
                         <input
                             type="text"
@@ -19,9 +19,10 @@ const PersonalInfo = () => {
                             )}
                         />
                     </div>
-                    <div className="mb-4 w-1/2 pl-2">
+                    <div className="mb-4 w-1/2 pl-2 input-div">
                         <label className="block mb-2 label-small">Email</label>
                         <input
+                            readOnly
                             type="email"
                             className={clsx(
                                 "input-field rounded bg-white text-black py-1"
@@ -30,7 +31,7 @@ const PersonalInfo = () => {
                     </div>
                 </div>
                 <div className="flex flex-wrap">
-                    <div className="mb-4 w-1/2 pr-2">
+                    <div className="mb-4 w-1/2 pr-2 input-div">
                         <label className="block mb-2 label-small">
                             Date of Birth
                         </label>
@@ -41,11 +42,11 @@ const PersonalInfo = () => {
                             )}
                         />
                     </div>
-                    <div className="mb-4 w-1/2 pl-2 flex flex-col">
+                    <div className="mb-4 w-1/2 pl-2 flex flex-col input-div">
                         <label className="block mb-2 label-small">
                             Contact
                         </label>
-                        <div className="relative flex">
+                        <div className="relative flex contact-info">
                             <input
                                 type="tel"
                                 className={clsx(

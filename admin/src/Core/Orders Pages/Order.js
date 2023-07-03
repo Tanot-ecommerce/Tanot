@@ -98,7 +98,7 @@ function Order(props) {
                       </p>
                       <p>
                         <RiPhoneLine className="user-icon" />{" "}
-                        {order.userId.phone}
+                        {order.address.phone}
                       </p>
                       <p>
                         <RiMailLine className="user-icon" />{" "}
@@ -106,12 +106,12 @@ function Order(props) {
                       </p>
                       <p>
                         <RiHome2Line className="user-icon" />{" "}
-                        {order.userId.address}, {order.userId.city} -{" "}
-                        {order.userId.pin}
+                        {order.address.name}, {order.address.landmark} -{" "}
+                        {order.address.city}, ({order.address.pincode})
                       </p>
                       <p>
                         <RiUserLocationLine className="user-icon" />{" "}
-                        {order.userId.state}
+                        {order.address.state}
                       </p>
                     </Col>
                     <Col className="order-detail-col">
@@ -120,10 +120,10 @@ function Order(props) {
                         {order.status == "placed"
                           ? "Placed"
                           : order.status == "shipped"
-                          ? "Shipped"
-                          : order.status == "delivered"
-                          ? "Delivered"
-                          : "Cancelled"}
+                            ? "Shipped"
+                            : order.status == "delivered"
+                              ? "Delivered"
+                              : "Cancelled"}
                       </p>
                       <p>
                         <RiMoneyDollarCircleLine className="order-icon" />{" "}
@@ -156,8 +156,7 @@ function Order(props) {
                       updateOrderStatus(
                         e,
                         "shipped",
-                        `${day}, ${date.getDate()} ${
-                          month[date.getMonth()]
+                        `${day}, ${date.getDate()} ${month[date.getMonth()]
                         } ${date.getFullYear()}`,
                         "Not yet delivered"
                       );
@@ -175,8 +174,7 @@ function Order(props) {
                         e,
                         "delivered",
                         order.shippedAt,
-                        `${day}, ${date.getDate()} ${
-                          month[date.getMonth()]
+                        `${day}, ${date.getDate()} ${month[date.getMonth()]
                         } ${date.getFullYear()}`
                       );
                     }}
@@ -203,9 +201,10 @@ function Order(props) {
                 </Col>
               </Row>
               <div className="order-products-div">
+                {/* {console.log(order.productIds)} */}
                 {order.productIds &&
-                  order.productIds.map((productId) => {
-                    
+                  order.productIds.map((productId, index) => {
+
                     return (
                       <Card className="order-product-card">
                         <Row className="product-card-row">
@@ -255,11 +254,11 @@ function Order(props) {
                               <Col>
                                 <Row>
                                   <Col lg={2}>
-                                    <p>Size : <strong>{productId.size}</strong></p>
+                                    <p>Size : <strong>{order.size[index]}</strong></p>
                                   </Col>
                                   <Col>
                                     <p>
-                                      Quantity :<strong> 1</strong>
+                                      Quantity :<strong> {order.quantity[index]}</strong>
                                     </p>
                                   </Col>
                                 </Row>

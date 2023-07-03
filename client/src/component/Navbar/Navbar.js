@@ -16,11 +16,16 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useSelector } from "react-redux";
 import List from "@mui/material/List";
+import { useLocation } from 'react-router-dom';
 import ListItem from "@mui/material/ListItem";
 import ModalForm from "../ModalForm/ModalForm";
+import { ToastContainer, toast } from "react-toastify";
+import { CircularProgress } from "@mui/material";
+
 
 const Navbar = () => {
     const [anchorEl, setAnchorEl] = useState(null);
+
 
     const handleOpenMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -32,6 +37,7 @@ const Navbar = () => {
     const { account, setAccount } = useContext(LoginContext);
 
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
     const [dropen, setdropen] = useState(false);
 
     const open = Boolean(anchorEl);
@@ -70,6 +76,8 @@ const Navbar = () => {
     };
 
     const logOutUser = async () => {
+        setLoading(true);
+        // window.location.reload();
         const res2 = await fetch("/logout", {
             method: "GET",
             headers: {
@@ -82,12 +90,18 @@ const Navbar = () => {
         // console.log(data2);
         if (res2.status === 201) {
             console.log("data valid");
-            alert("logout successfully");
+            // alert("logout successfully");
+            setTimeout(() => {
+                toast.success("Logout In succefully", {
+                  position: "top-center",
+                 });
+                 }, 2000); 
             navigate("/");
             setAccount(false);
         } else {
             console.log("cookies error");
         }
+        setLoading(false);
     };
 
     //for searching
@@ -119,6 +133,7 @@ const Navbar = () => {
 
     //fetching product list
     const getProductData = async () => {
+        setLoading(true);
         try {
             const res = await fetch("/getproducts", {
                 method: "GET",
@@ -129,7 +144,7 @@ const Navbar = () => {
             });
 
             const data = await res.json();
-            console.log(data); // Check the value of data
+            // console.log(data); // Check the value of data
             if (res.status === 201) {
                 console.log("data valid");
                 setProductsdata(data);
@@ -139,13 +154,30 @@ const Navbar = () => {
         } catch (err) {
             console.error("Error fetching data:", err);
         }
+        setLoading(false);
     };
+
+    //cart icon not updating when user place order it should become zero so to do it
+    //im using locatin path when location path will change then it will triggered and 
+    //data of cart will be update.
+    const location = useLocation();
+    const [path, setPath] = useState('');
+
+    useEffect(() => {
+        setPath(location.pathname);
+      }, [location.pathname]);
+
+      //now when path will change then this will be called again
+      useEffect(() =>{
+       getDetailValidUser();
+      },[path])
 
     useEffect(() => {
         getProductData();
-        getDetailValidUser();
     }, []);
 
+
+    
     const handleMyAccountClick = () => {
         handleClose();
         navigate("/profile");
@@ -163,6 +195,14 @@ const Navbar = () => {
     };
 
     return (
+        <>
+        {
+            loading ?(
+            <div className="circle">
+                <CircularProgress />
+                Loading...
+            </div>
+            ):(
         <header className="header-container">
             <div className="navbar-container">
                 <div className="navbar-top-container p-5">
@@ -183,26 +223,19 @@ const Navbar = () => {
                             <SearchIcon id="search" />
                         </div>
 
-                        {text && (
-                            <Menu
-                                anchorEl={anchorEl}
-                                open={Boolean(anchorEl)}
-                                onClose={handleCloseMenu}
-                            >
-                                {suggestions.map((product) => (
-                                    <MenuItem
-                                        key={product.id}
-                                        onClick={() => {
-                                            handleCloseMenu();
-                                            navigate(
-                                                `/productdetail/${product.id}`
-                                            );
-                                        }}
-                                    >
-                                        {product.title}
-                                    </MenuItem>
-                                ))}
-                            </Menu>
+                        {
+                            text && products &&(
+                            <List className="extrasearch" hidden={liopen}>
+                                {
+                                    products.filter(product => product.title.toLowerCase().includes(text.toLowerCase())).map(product => (
+                                        <ListItem key={product._id}>
+                                            <NavLink to={`/productdetail/${product._id}`} onClick={() => {setLiopen(true); setText("");}}>
+                                                {product.title}
+                                            </NavLink>
+                                        </ListItem>
+                                    ))
+                                }
+                            </List>
                         )}
                     </div>
                     <div className="right">
@@ -301,7 +334,11 @@ const Navbar = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </header>
+            )
+        }
+        </>
     );
 };
 
