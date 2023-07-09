@@ -427,14 +427,17 @@ router.post("/products/add", upload.none(),authenticateadmin, async (req, res) =
   const mrp = req.body.mrp;
   const price = req.body.price;
   const discount = req.body.discount;
-  const S_stock = req.body.S_stock;
-  const M_stock = req.body.M_stock;
-  const L_stock = req.body.L_stock;
-  const XL_stock = req.body.XL_stock;
-  const XXL_stock = req.body.XXL_stock;
+  // const S_stock = req.body.S_stock;
+  // const M_stock = req.body.M_stock;
+  // const L_stock = req.body.L_stock;
+  // const XL_stock = req.body.XL_stock;
+  // const XXL_stock = req.body.XXL_stock;
   const category = req.body.category;
   const description = req.body.description;
   const images = req.body.images;
+  const fabric = req.body.fabric;
+  const pattern = req.body.pattern;
+  const sleeveLength = req.body.sleeveLength;
   // console.log(images);
   // console.log(req.body.images);
   // console.log(title);
@@ -451,13 +454,13 @@ router.post("/products/add", upload.none(),authenticateadmin, async (req, res) =
   // console.log(req.body);
 
   try {
-    if (!title || !mrp || !price || !discount || !S_stock || !M_stock || !L_stock || !XL_stock || !XXL_stock || !category || !description || !images) {
+    if (!title || !mrp || !price || !discount || !fabric || !pattern || !sleeveLength || !category || !description || !images) {
       res.status(422).json({ error: "fill the all data" });
       console.log("no data available")
     }
 
     const finalProduct = new Products({
-      title, mrp, price, discount, S_stock, M_stock, L_stock, XL_stock, XXL_stock, category, description, images
+      title, mrp, price, discount, category, description, images, fabric, sleeveLength, pattern,
     });
 
     const storedata = await finalProduct.save();

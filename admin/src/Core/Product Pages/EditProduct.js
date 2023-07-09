@@ -48,14 +48,17 @@ function EditProduct(props) {
       formData.append("mrp", productData.mrp);
       formData.append("price", productData.price);
       formData.append("discount", productData.discount);
-      formData.append("S_stock", productData.S_stock);
-      formData.append("M_stock", productData.M_stock);
-      formData.append("L_stock", productData.L_stock);
-      formData.append("XL_stock", productData.XL_stock);
-      formData.append("XXL_stock", productData.XXL_stock);
+      // formData.append("S_stock", productData.S_stock);
+      // formData.append("M_stock", productData.M_stock);
+      // formData.append("L_stock", productData.L_stock);
+      // formData.append("XL_stock", productData.XL_stock);
+      // formData.append("XXL_stock", productData.XXL_stock);
       formData.append("category", productData.category);
       formData.append("description", productData.description);
-      formData.append("images",productData.images);
+      formData.append("images", productData.images);
+      formData.append("fabric", productData.fabric);
+      formData.append("pattern", productData.pattern);
+      formData.append("sleeveLength", productData.sleeveLength);
       // console.log(formData.get("title"));
 
       axios({
@@ -66,20 +69,23 @@ function EditProduct(props) {
           "Content-Type": "application/json",
         },
       }).then((response) => {
-            setProductData({
-              title: "",
-              mrp:"",
-              price: "",
-              discount:"",
-              S_stock: "",
-              M_stock:"",
-              L_stock:"",
-              XL_stock:"",
-              XXL_stock:"",
-              category: "",
-              description: "",
-            });
-            alert("product updated");
+        setProductData({
+          title: "",
+          mrp: "",
+          price: "",
+          discount: "",
+          S_stock: "",
+          M_stock: "",
+          L_stock: "",
+          XL_stock: "",
+          XXL_stock: "",
+          category: "",
+          description: "",
+          fabric: "",
+          sleeveLength: "",
+          pattern: "",
+        });
+        alert("product updated");
       });
     } catch (err) {
       console.log("Error : " + err.message);
@@ -154,31 +160,85 @@ function EditProduct(props) {
                   </Col>
                 </Row>
                 <Row>
-                  <Col>
-                    <div className="add-product-input-div">
-                      <p>Product Category</p>
-                      <select
-                        className="add-product-dropdown"
-                        name="category"
-                        id="category"
-                        value={productData.category}
-                        onChange={handleChange}
-                      >
-                        <option className="add-product-dropdown-option">
-                          select option
-                        </option>
-                        <option className="add-product-dropdown-option">
-                          option 1
-                        </option>
-                        <option className="add-product-dropdown-option">
-                          option 2
-                        </option>
-                        <option className="add-product-dropdown-option">
-                          option 3
-                        </option>
-                      </select>
-                    </div>
-                  </Col>
+                <Col>
+                <div className="add-product-input-div">
+                  <p>Product Category</p>
+                  <select
+                    className="add-product-dropdown"
+                    name="category"
+                    id="category"
+                    value={productData.category}
+                    onChange={handleChange}
+                  >
+                    <option className="add-product-dropdown-option">
+                      select option
+                    </option>
+                    <option className="add-product-dropdown-option">
+                    Casual wear 
+                    </option>
+                    <option className="add-product-dropdown-option">
+                    Ethnic wear
+                    </option>
+                    <option className="add-product-dropdown-option">
+                    Feeding gown
+                    </option>
+                  </select>
+                </div>
+              </Col>
+              <Col>
+                <div className="add-product-input-div">
+                  <p>Sleeve length</p>
+                  <select
+                    className="add-product-dropdown"
+                    name="sleeveLength"
+                    id="sleeveLength"
+                    value={productData.sleeveLength}
+                    onChange={handleChange}
+                  >
+                    <option className="add-product-dropdown-option">
+                      select option
+                    </option>
+                    <option className="add-product-dropdown-option">
+                      Short Sleeve
+                    </option>
+                    <option className="add-product-dropdown-option">
+                      Half Sleeve
+                    </option>
+                    <option className="add-product-dropdown-option">
+                      Three-Quarter Sleeve
+                    </option>
+                    <option className="add-product-dropdown-option">
+                      Full Sleeve
+                    </option>
+                  </select>
+                </div>
+              </Col>
+              <Col>
+                <div className="add-product-input-div">
+                  <p>Pattern</p>
+                  <input
+                    type="text"
+                    name="pattern"
+                    value={productData.pattern}
+                    onChange={handleChange}
+                    autoComplete="off"
+                  ></input>
+                </div>
+              </Col>
+              <Col>
+                <div className="add-product-input-div">
+                  <p>Fabric</p>
+                  <input
+                    type="text"
+                    name="fabric"
+                    value={productData.fabric}
+                    onChange={handleChange}
+                    autoComplete="off"
+                  ></input>
+                </div>
+              </Col>
+              </Row>
+              <Row>
                   <Col>
                     <div className="add-product-input-div">
                       <p>Stock Quantity (S - Size)</p>

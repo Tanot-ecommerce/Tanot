@@ -21,23 +21,18 @@ const productSchema = new mongoose.Schema(
     },
     S_stock: {
       type: Number,
-      required:true,
     },
     M_stock: {
       type: Number,
-      required:true,
     },
     L_stock: {
       type: Number,
-      required:true,
     },
     XL_stock: {
       type: Number,
-      required:true,
     },
     XXL_stock: {
       type: Number,
-      required:true,
     },
     category: {
       type:String,
@@ -48,6 +43,9 @@ const productSchema = new mongoose.Schema(
       required:true,
     },
     images:[String],
+    fabric:String,
+    sleeveLength:String,
+    pattern:String,
   },
   { timestamps: true }
 );

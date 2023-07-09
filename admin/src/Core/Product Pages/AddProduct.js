@@ -18,6 +18,9 @@ function AddProduct() {
     XXL_stock: "",
     category: "",
     description: "",
+    fabric: "",
+    sleeveLength: "",
+    pattern: "",
   });
 
   const handleChange = (event) => {
@@ -56,13 +59,16 @@ function AddProduct() {
       formData.append("mrp", newProduct.mrp);
       formData.append("price", newProduct.price);
       formData.append("discount", newProduct.discount);
-      formData.append("S_stock", newProduct.S_stock);
-      formData.append("M_stock", newProduct.M_stock);
-      formData.append("L_stock", newProduct.L_stock);
-      formData.append("XL_stock", newProduct.XL_stock);
-      formData.append("XXL_stock", newProduct.XXL_stock);
+      // formData.append("S_stock", newProduct.S_stock);
+      // formData.append("M_stock", newProduct.M_stock);
+      // formData.append("L_stock", newProduct.L_stock);
+      // formData.append("XL_stock", newProduct.XL_stock);
+      // formData.append("XXL_stock", newProduct.XXL_stock);
       formData.append("category", newProduct.category);
       formData.append("description", newProduct.description);
+      formData.append("fabric", newProduct.fabric);
+      formData.append("pattern", newProduct.pattern);
+      formData.append("sleeveLength", newProduct.sleeveLength);
       // console.log(formData.get("title"));
 
       // Append the imageFiles array to the formData as a single field
@@ -96,6 +102,9 @@ function AddProduct() {
             XXL_stock: "",
             category: "",
             description: "",
+            fabric: "",
+            sleeveLength: "",
+            pattern: "",
           });
           alert("data added");
         }
@@ -191,17 +200,71 @@ function AddProduct() {
                       select option
                     </option>
                     <option className="add-product-dropdown-option">
-                      option 1
+                    Casual wear 
                     </option>
                     <option className="add-product-dropdown-option">
-                      option 2
+                    Ethnic wear
                     </option>
                     <option className="add-product-dropdown-option">
-                      option 3
+                    Feeding gown
                     </option>
                   </select>
                 </div>
               </Col>
+              <Col>
+                <div className="add-product-input-div">
+                  <p>Sleeve length</p>
+                  <select
+                    className="add-product-dropdown"
+                    name="sleeveLength"
+                    id="sleeveLength"
+                    value={newProduct.sleeveLength}
+                    onChange={handleChange}
+                  >
+                    <option className="add-product-dropdown-option">
+                      select option
+                    </option>
+                    <option className="add-product-dropdown-option">
+                      Short Sleeve
+                    </option>
+                    <option className="add-product-dropdown-option">
+                      Half Sleeve
+                    </option>
+                    <option className="add-product-dropdown-option">
+                      Three-Quarter Sleeve
+                    </option>
+                    <option className="add-product-dropdown-option">
+                      Full Sleeve
+                    </option>
+                  </select>
+                </div>
+              </Col>
+              <Col>
+                <div className="add-product-input-div">
+                  <p>Pattern</p>
+                  <input
+                    type="text"
+                    name="pattern"
+                    value={newProduct.pattern}
+                    onChange={handleChange}
+                    autoComplete="off"
+                  ></input>
+                </div>
+              </Col>
+              <Col>
+                <div className="add-product-input-div">
+                  <p>Fabric</p>
+                  <input
+                    type="text"
+                    name="fabric"
+                    value={newProduct.fabric}
+                    onChange={handleChange}
+                    autoComplete="off"
+                  ></input>
+                </div>
+              </Col>
+              </Row>
+              <Row>
               <Col>
                 <div className="add-product-input-div">
                   <p>Stock Quantity (S - Size)</p>
