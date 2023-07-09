@@ -75,7 +75,7 @@ const Footer = () => {
                             </h3>
                             <ul className="text-gray-400 text-sm">
                                 <li>
-                                    <a href="/about">About Us</a>
+                                    <a href="/aboutus">About Us</a>
                                 </li>
                                 <li>
                                     <a href="/faq">FAQ</a>
