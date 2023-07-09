@@ -5,8 +5,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from 'react-router-dom';
 import clsx from "clsx";
+import axios from "axios"
 import { CircularProgress } from '@mui/material';
-
+import logo from "../../Images/logo.png"
 const Checkout = () => {
     const { state } = useLocation();
     let { orderAmount, quantity, products, price, size } = state || {};
@@ -20,7 +21,6 @@ const Checkout = () => {
     const [pincode, setPincode] = useState(null);
     const [stat, setStat] = useState(null);
     const [city, setCity] = useState(null);
-    const [payment, setPayment] = useState(null);
     const navigate = useNavigate();
 
     const addStyle = (inputId) => {
@@ -41,7 +41,7 @@ const Checkout = () => {
         if (!orderAmount) {
             navigate("/Auth");
             setTimeout(() => {
-                toast.warning("Please Login first", {
+                toast.warning("Action Denied", {
                     position: "top-center",
                 });
             }, 2000);
@@ -49,13 +49,16 @@ const Checkout = () => {
     })
 
     //for checkout
-    const placeOrder = async () => {
+    const placeOrder = async (payment, rzpOrderId, rzpPaymentId) => {
+
+        // alert(rzpOrderId, rzpPaymentId);
 
         if (!name || !phone || !landmark || !pincode || !stat || !city) {
             alert("please fill all fields in address field to checkout");
         }
         else if (name && phone && landmark && pincode && city && stat) {
             setLoading(true);
+
             const res = await fetch("/place/order", {
                 method: "POST",
                 headers: {
@@ -73,7 +76,9 @@ const Checkout = () => {
                     landmark,
                     pincode,
                     stat,
-                    city
+                    city,
+                    rzpOrderId,
+                    rzpPaymentId,
                 }),
             });
             const data = await res.json();
@@ -93,7 +98,11 @@ const Checkout = () => {
                         position: "top-center",
                     });
                 }, 2000);
-                navigate(`/order/${data._id}`);
+
+                //to redirect user to orders page in this way so that he cant come to checkout again.
+                window.history.replaceState(null, '', `/order/${data._id}`);
+                window.location.replace(`/order/${data._id}`);
+                // navigate(`/order/${data._id}`);
             }
 
             setLoading(false);
@@ -102,36 +111,53 @@ const Checkout = () => {
 
     //to accept payment
 
-    const loadScript = (src) => {
-        return new Promise((resolve) => {
-            const script = document.createElement('script')
-            script.src = src;
+    const payNow = async () => {
+        //get key
+        const { data: { key } } = await axios.get("/getkey")
 
-            script.onload = () => {
-                resolve(true);
+        const { data: { order } } = await axios.post("/checkout", {
+            orderAmount
+        });
+
+        const options = {
+            key: key, // Enter the Key ID generated from the Dashboard
+            amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            currency: "INR",
+            name: "TANOT",
+            description: "Test Transaction",
+            image: logo,
+            order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            callback_url: "/paymentverification",
+            prefill: {
+                "name": name,
+                "email": "gaurav.kumar@example.com",
+                "contact": phone
+            },
+            notes: {
+                "address": "Razorpay Corporate Office"
+            },
+            handler: function (response) {
+                // Payment success callback
+
+                //call if they updated
+                // if(payment && rzpOrderId && rzpPaymentId)
+                // while(!rzpOrderId && !rzpPaymentId);
+                placeOrder("Pre Paid", response.razorpay_order_id, response.razorpay_payment_id);
+            },
+            theme: {
+                "color": "#131921"
             }
+        };
+        const razor = new window.Razorpay(options);
 
-            script.onerror = () => {
-                resolve(false);
-            }
-
-            document.body.appendChild(script);
-        })
-    }
-
-    const displayRazorpay = async (amount) => {
-        const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
-
-        if (!res) {
-            toast.warning("It seems you are offline.", {
-                position: "top-center",
-            });
-            return;
+        if (!name || !phone || !landmark || !pincode || !stat || !city) {
+            alert("please fill all fields in address field to checkout");
         }
-        console.log(res);
-    };
+        else
+            razor.open();
 
-    displayRazorpay(1000);
+        // console.log(data);
+    }
     return (
         <>
             {
@@ -208,11 +234,11 @@ const Checkout = () => {
                                     <hr></hr>
                                     <h2 style={{ textAlign: "center" }}><b>Payment Method</b></h2>
                                     <br />
-                                    <h2><b>1. For Cash On Delievery(COD) Click Here</b></h2>
-                                    <button style={{ backgroundColor: "#FF9900" }} onClick={() => { placeOrder(); setPayment("COD"); }}>place order(COD)</button>
+                                    <h2><b>1. For Cash On Delievery(COD)</b></h2>
+                                    <button style={{ backgroundColor: "#FF9900" , padding:"2%", borderRadius:"5%", marginTop:"2%"}} onClick={() => { placeOrder("COD", "", ""); }}>place order(COD)</button>
                                     <hr></hr>
                                     &nbsp; <h2><b>2. For Prepaid Payment(UPI/ Credit card/Debit Card/ Net Banking)</b></h2>
-                                    <button style={{ backgroundColor: "#FF9900" }} onClick={() => { displayRazorpay(orderAmount); }}>Proceed to Payment</button>
+                                    <button style={{ backgroundColor: "#FF9900", padding:"2%", borderRadius:"5%", marginTop:"2%" }} onClick={payNow}>Proceed to Payment</button>
                                 </div>
                             </div>
                             <ToastContainer />

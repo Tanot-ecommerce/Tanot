@@ -49,6 +49,11 @@ const OrderHistory = () => {
         width: 190,
       },
       {
+        field:"payment",
+        headerName:"Payment method",
+        width:150,
+      },
+      {
         field: "orderedAt",
         headerName: "Order Date",
         width: 190,
@@ -81,6 +86,7 @@ const OrderHistory = () => {
                     orderAmount: `Rs. ${order.orderAmount
                       .toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}/-`,
+                      payment:order.payment,
                     orderedAt: order.orderedAt,
                   };
                 })}

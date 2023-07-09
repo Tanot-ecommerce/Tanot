@@ -62,6 +62,11 @@ function Orders() {
       width: 160,
     },
     {
+        field:"payment",
+        headerName:"Payment method",
+        width:150,
+    },
+    {
       field: "orderedAt",
       headerName: "Order Date",
       width: 160,
@@ -88,7 +93,7 @@ function Orders() {
                     orderId: order.orderId,
                     userId: order.userId.email,
                     userName: order.userId.name,
-                    userPhone: order.userId.phone,
+                    userPhone: order.address.phone,
                     status:
                       order.status == "placed"
                         ? "Placed"
@@ -100,6 +105,7 @@ function Orders() {
                     orderAmount: `Rs. ${order.orderAmount
                       .toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}/-`,
+                      payment:order.payment,
                     orderedAt: order.orderedAt,
                   };
                 })}

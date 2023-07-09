@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 // const DefaultData = require("./DefaultData")
 const cors = require('cors');
 const router = require('./routes/router')
-
+const payRouter = require("./routes/paymentRoute")
 
 app.use(express.json());
 app.use(cookieParser(""));
@@ -17,7 +17,9 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(router);
+app.use(payRouter);
 const port = 8005;
+
 
 
 

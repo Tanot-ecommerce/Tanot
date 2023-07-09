@@ -249,9 +249,9 @@ router.post("/add/complaints", authenticate, async (req, res) => {
 // to place order
 router.post("/place/order", authenticate, async (req, res) => {
   try {
-    const { orderAmount, products, price, size, quantity, payment, name, phone, landmark, pincode, stat, city} = req.body;
+    const { orderAmount, products, price, size, quantity, payment, name, phone, landmark, pincode, stat, city, rzpOrderId, rzpPaymentId} = req.body;
   //  console.log(products);
-  // console.log(payment);
+  // console.log(rzpOrderId);
     // Get the authenticated user
     const userId = req.rootUser._id;
     const productIds = products.map(idString => new mongoose.Types.ObjectId(idString));
@@ -290,6 +290,8 @@ router.post("/place/order", authenticate, async (req, res) => {
       quantity:quantity,
       payment:payment,
       address,
+      rzpOrderId:rzpOrderId,
+      rzpPaymentId:rzpPaymentId,
     });
     // console.log("ok");
 
@@ -341,8 +343,15 @@ router.get("/order/:id",authenticate, async(req, res) =>{
 })
 
 
-
-
+//send razorpay key to frontend
+router.get("/getkey" , (req,res) =>{
+  try{
+     res.status(200).json({key:process.env.RAZORPAY_API_KEY})
+  }catch(err)
+  {
+    console.log("rzpkey err " +err)
+  }
+})
 
 
 

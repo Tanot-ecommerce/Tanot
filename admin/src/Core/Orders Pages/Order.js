@@ -143,6 +143,8 @@ function Order(props) {
                         <RiCalendarCheckLine className="order-icon" />{" "}
                         {order.deliveredAt}
                       </p>
+                      <p><b>Payment:  {order.payment} </b></p>
+                      <p><b>Payment Id: {order.rzpPaymentId}</b></p>
                     </Col>
                   </Row>
                 </Col>
@@ -270,7 +272,7 @@ function Order(props) {
                                     <p>
                                       <strong>
                                         Rs.&nbsp;
-                                        {productId.price
+                                        {(productId.price*order.quantity[index])
                                           .toString()
                                           .replace(
                                             /\B(?=(\d{3})+(?!\d))/g,

@@ -29,6 +29,8 @@ const AllOrdertSchema = new mongoose.Schema(
      pincode:Number,
      state:String,
     },
+    rzpOrderId:String,
+    rzpPaymentId:String,
 },
 { timestamps: true }
 );
