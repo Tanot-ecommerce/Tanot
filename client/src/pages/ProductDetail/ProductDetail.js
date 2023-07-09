@@ -160,6 +160,12 @@ const ProductDetail = () => {
                         <span>({indData.discount}% Off)</span>
 
                         <hr />
+                        
+                        <div className="general-details">
+                        <p><b>Fabric:</b>{" "} {indData.fabric}</p>
+                        <p><b>Sleeve Length:</b>{" "} {indData.sleeveLength}</p>
+                        <p><b>Pattern:</b>{" "} {indData.pattern}</p>
+                        </div>
 
                         <div className="size-select">
                             <label>size</label>

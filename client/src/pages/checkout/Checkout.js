@@ -40,7 +40,7 @@ const Checkout = () => {
 
     useEffect(() => {
         if (!orderAmount) {
-            navigate("/Auth");
+            navigate("/");
             setTimeout(() => {
                 toast.warning("Action Denied", {
                     position: "top-center",
