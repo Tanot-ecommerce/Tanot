@@ -8,10 +8,8 @@ import ImageGallery from 'react-image-gallery';
 import Accordation from '../../component/Accordation/Accordation';
 import 'react-image-gallery/styles/css/image-gallery.css'
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import './ProductDetail.css'
 
-import heart from '../../Images/heart.svg'
-import { colors } from '@mui/material';
+import './ProductDetail.css'
 
 const ProductDetail = () => {
 
@@ -119,9 +117,6 @@ const ProductDetail = () => {
 
 
 
-
-
-
     return (
         <>
             {
@@ -186,7 +181,6 @@ const ProductDetail = () => {
                         </div>
                     )
             }
-
         </>
     )
 }
