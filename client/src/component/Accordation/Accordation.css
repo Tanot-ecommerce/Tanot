@@ -1,0 +1,28 @@
+/* background class of question */
+.Collapsible{
+   text-align: center;
+   width: 80%;
+   border-left: solid #ccc 1px;
+   border-right: solid #ccc 1px;
+   border-top: solid #ccc 0.1px;
+   border-bottom: solid #ccc 0.1px;
+}
+
+/* class for trigger element */
+.Collapsible__trigger{
+    font-size: 17px;
+}
+
+/* class for content */
+.Collapsible__contentOuter{
+background-color: white;
+
+}
+
+/* content ineer class */
+.Collapsible_contentInner{
+    font-size: 10px;
+}
+.Collapsible_contentInner p{
+    text-align: left;
+} 

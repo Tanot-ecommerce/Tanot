@@ -126,6 +126,10 @@ router.post("/login",async(req,res)=>{
         expires: new Date(Date.now()+ 9000000),  //cookie expire in 15 min
         httpOnly:true
       })
+<<<<<<< HEAD
+=======
+      
+>>>>>>> 5a8531c9e9e6baa4009f152de971e0bb559cd286
       res.status(201).json(userLogin)
      }
     }else{

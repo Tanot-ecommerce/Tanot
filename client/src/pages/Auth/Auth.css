@@ -37,7 +37,6 @@ label{
 }
 form input{
 	width: 60%;
-	height: 20px;
 	background: #e0dede;
 	justify-content: center;
 	display: flex;
@@ -47,7 +46,7 @@ form input{
 	outline: none;
 	border-radius: 5px;
 }
-button{
+.main form button{
 	width: 60%;
 	height: 40px;
 	margin: 10px auto;
@@ -64,7 +63,7 @@ button{
 	transition: .2s ease-in;
 	cursor: pointer;
 }
-button:hover{
+.main form button:hover{
 	background: #6d44b8;
 }
 .login{

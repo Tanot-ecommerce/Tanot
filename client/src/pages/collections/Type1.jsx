@@ -26,8 +26,12 @@ const Type1 = () => {
         console.error('Error fetching data:', error);
       }
     };
+<<<<<<< HEAD
     setTimeout(gettypedata, 1000);
     // gettypedata();
+=======
+    gettypedata();
+>>>>>>> 5a8531c9e9e6baa4009f152de971e0bb559cd286
   }, [id]);
 
   return (
