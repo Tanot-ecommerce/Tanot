@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { LeftSliderArrow, RightSliderArrow } from "../../utils/assets/svg";
 import "./BestSellers.css";
+import { LeftSliderArrow, RightSliderArrow } from "../../utils/assets/svg";
 import ProductsData from "../../data/ProductsData";
 
 const BestSellers = () => {
@@ -21,34 +21,43 @@ const BestSellers = () => {
     const visibleProducts = ProductsData.slice(currentSlide, currentSlide + 3);
 
     return (
-        <section className="best-sellers-container">
-            <h2 className="best-sellers-section-title">Best Sellers</h2>
-            <div className="best-sellers-slider-container">
+        <section className="best-sellers-container py-6">
+            <h2 className="text-4xl label-arial text-center text-white my-6">
+                Best <span>Collections</span>
+            </h2>
+            <div className="flex items-center justify-between">
                 <div
-                    className="best-sellers-slider-arrow best-sellers-slider-arrow-left"
+                    className="slider-arrow cursor-pointer left-slider left-4"
                     onClick={handlePreviousSlide}
                 >
                     <LeftSliderArrow />
                 </div>
-                <div className="best-sellers-product-list">
+                <div className="best-sellers-list p-8 flex gap-4 overflow-x-auto">
                     {visibleProducts.map((product) => (
                         <div
                             key={product.id}
-                            className="best-sellers-product-item"
+                            className="best-sellers-product-item bg-white rounded-lg cursor-pointer flex flex-col justify-between"
                         >
-                            <img
-                                src={product.image}
-                                alt={product.title}
-                                className="best-sellers-product-image"
-                            />
-                            <h3 className="best-sellers-product-title">
-                                {product.title}
-                            </h3>
-                            <span className="best-sellers-product-price">
-                                Price: {product.price}
-                            </span>
-                            <div className="best-sellers-product-actions">
-                                <button className="best-sellers-btn-add-to-cart">
+                            <div className="w-full h-96">
+                                <img
+                                    src={product.image}
+                                    alt={product.title}
+                                    className="object-full rounded-lg w-full h-full"
+                                />
+                            </div>
+                            <div className="mt-4">
+                                <h3 className="text-lg font-bold mb-2">
+                                    {product.title}
+                                </h3>
+                                <p className="text-gray-600">
+                                    Price: {product.price}
+                                </p>
+                            </div>
+                            <div className="mt-4 space-x-2 p-4">
+                                <button className="shop-button text-white font-bold py-2 px-4 rounded">
+                                    Buy Now
+                                </button>
+                                <button className="cart-button  text-white font-bold py-2 px-4 rounded">
                                     Add to Cart
                                 </button>
                             </div>
@@ -56,7 +65,7 @@ const BestSellers = () => {
                     ))}
                 </div>
                 <div
-                    className="best-sellers-slider-arrow best-sellers-slider-arrow-right"
+                    className="slider-arrow right-slider cursor-pointer"
                     onClick={handleNextSlide}
                 >
                     <RightSliderArrow />

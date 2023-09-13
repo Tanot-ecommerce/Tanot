@@ -1,128 +1,125 @@
 .testimonials {
-  text-align: center;
-  padding: 50px 0;
-  background: gainsboro;
-}
-
-.testimonial-section-title {
-  font-size: 28px;
-  margin-bottom: 20px;
-  font-family: arial;
-  font-weight: 400;
+    min-height: 548px;
+    text-align: center;
+    padding: 50px 0;
+    background: #131921;
+    background: linear-gradient(to bottom, #131921, #000000);
 }
 
 .slider-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
 
-.slider-arrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 24px;
-  color: #0d0d0d;
-  transition: color 0.3s ease;
-}
-
-.slider-arrow:hover {
-  color: #000;
+.testimonial-slider-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    transition: color 0.3s ease;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .slider-arrow-left {
-  margin-right: 10px;
+    left: 10px;
 }
 
 .slider-arrow-right {
-  margin-left: 10px;
+    right: 10px;
 }
 
 .testimonials-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-width: 100%;
-  margin: 50px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 100%;
+    margin: 50px 0;
 }
 
 .testimonial-item {
-  width: 300px;
-  margin: 0 12px;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 5px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-  transition: box-shadow 0.3s ease;
-  cursor: pointer;
+    width: 340px;
+    margin: 0 18px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease;
+    cursor: pointer;
 }
 
 .testimonial-item:hover {
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-  transform: scale(1.05);
-  transition-timing-function: ease-in-out;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    transform: scale(1.05);
+    transition-timing-function: ease-in-out;
 }
 
 .testimonial-rating {
-  font-size: 24px;
-  margin-bottom: 10px;
+    font-size: 24px;
+    margin-bottom: 10px;
 }
 
 .testimonial-text {
-  margin-bottom: 10px;
-  text-align: left;
-  font-size: 13px;
+    margin-bottom: 10px;
+    text-align: left;
+    font-size: 14px;
 }
 
 .testimonial-details {
-  align-items: center;
-  justify-content: space-between;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .testimonial-author {
-  font-style: italic;
-  text-align: right;
-  font-size: 10px;
-  margin-bottom: 5px;
+    font-style: italic;
+    text-align: right;
+    font-size: 10px;
+    margin-bottom: 5px;
 }
 
 .testimonial-divider {
-  flex-grow: 1;
-  margin: 0 10px;
-  border: none;
-  border-top: 1px solid #ccc;
+    flex-grow: 1;
+    margin: 0 10px;
+    border: none;
+    border-top: 1px solid #ccc;
 }
 
 .testimonial-product {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
 }
 
 .testimonial-image {
-  width: 40px;
-  height: 40px;
-  margin-right: 10px;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
 }
 
 .testimonial-product-name {
-  font-size: 14px;
+    font-size: 14px;
 }
 
-@media (max-width: 768px) {
-  .testimonials-list {
-    justify-content: flex-start;
-  }
+/* Testimonials Component - Mobile */
+@media only screen and (max-width: 767px) {
+    .testimonial-slider-arrow {
+        background-color: rgba(255, 255, 255, 0.5);
+        padding: 0.5rem;
+        border-radius: 50%;
+    }
 
-  .testimonial-item {
-    width: 100%;
-    margin: 0 0 20px;
-  }
+    .testimonials-list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-  .slider-container {
-    flex-wrap: wrap;
-  }
+    .testimonial-item:not(:first-child) {
+        display: none;
+    }
 }

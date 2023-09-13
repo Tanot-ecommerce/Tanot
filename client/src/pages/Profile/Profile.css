@@ -1,0 +1,25 @@
+@media (max-width: 768px) {
+    .profile-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .profile-left-section {
+        width: 100%;
+        padding-right: 2px;
+    }
+
+    .vertical-line {
+        display: block;
+        height: 1px;
+        width: 410px;
+        background-color: #000;
+        margin: 0 auto;
+    }
+
+    .profile-right-section {
+        order: 2;
+        width: 85%;
+        padding-left: 2px;
+    }
+}

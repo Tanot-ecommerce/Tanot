@@ -1,16 +1,16 @@
-.rightheader{
+.rightheader {
     width: 250px;
     height: auto;
 }
 
-.rightheader .right_nav{
+.rightheader .right_nav {
     display: flex;
     align-items: center;
     background-color: #131921;
     padding: 10px;
 }
 
-.rightheader .right_nav h3{
+.rightheader .right_nav h3 {
     vertical-align: middle;
     font-style: italic;
     margin-left: 5px;
@@ -18,26 +18,26 @@
     color: #fff;
 }
 
-.rightheader .avtar{
+.rightheader .avtar {
     cursor: pointer;
     margin-top: 20px;
     margin-left: 10px;
 }
 
-.rightheader .avtar2{
+.rightheader .avtar2 {
     cursor: pointer;
     background-color: #1365cf;
     margin-top: 20px;
     margin-left: 10px;
 }
-.rightheader .nav_btn{
+.rightheader .nav_btn {
     display: flex;
     flex-direction: column;
     margin-left: 40px;
     margin-top: 20px;
 }
 
-.nav_btn a{
+.nav_btn a {
     text-decoration: none;
     font-size: 16px;
     margin-bottom: 20px;
@@ -45,7 +45,7 @@
     color: #131921;
 }
 
-.nav_btn .flag{
+.nav_btn .flag {
     display: flex;
     align-items: center;
 }
