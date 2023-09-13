@@ -13,7 +13,7 @@ const shopByCategory = () => {
             </h2>
             <div className="category-wrapper p-8">
                 <div className="category">
-                    <Link to="/collections/option 1">
+                    <Link to="/collections/Casual wear">
                         <img
                             src={category1}
                             alt="delievery_icon"
@@ -22,7 +22,7 @@ const shopByCategory = () => {
                     </Link>
                 </div>
                 <div className="category">
-                    <Link to="/collections/option 2">
+                    <Link to="/collections/Ethnic wear">
                         <img
                             src={category2}
                             alt="quality_icon"
@@ -31,7 +31,7 @@ const shopByCategory = () => {
                     </Link>
                 </div>
                 <div className="category">
-                    <Link to="/collections/option 3">
+                    <Link to="/collections/Feeding gown">
                         <img
                             src={category3}
                             alt="return_icon"

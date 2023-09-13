@@ -12,6 +12,7 @@ import "./ProductDetail.css";
 import "../../utils/generalstyles/generalstyles.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import IosShareIcon from '@mui/icons-material/IosShare';
 
 const ProductDetail = () => {
 
@@ -129,6 +130,24 @@ const ProductDetail = () => {
         setLoading(false);
     };
 
+    //to share item
+    const handleShareButtonClick = async () => {
+        try {
+          if (navigator.share) {
+            // Use the Web Share API if it's available
+            await navigator.share({
+              title: `${indData.title}`,
+              text: `${indData.description}`,
+              url: `http://localhost:3000/productdetail/${id}`,
+            });
+          } else {
+            // Fallback for browsers that don't support the Web Share API
+            alert('Sharing is not supported on this device.');
+          }
+        } catch (error) {
+          console.error('Error sharing:', error);
+        }
+      };
     return (
         <>
             {loading ? (
@@ -158,14 +177,9 @@ const ProductDetail = () => {
                             &#8377; {indData.mrp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                         </span>
                         <span>({indData.discount}% Off)</span>
-
+                        
                         <hr />
                         
-                        <div className="general-details">
-                        <p><b>Fabric:</b>{" "} {indData.fabric}</p>
-                        <p><b>Sleeve Length:</b>{" "} {indData.sleeveLength}</p>
-                        <p><b>Pattern:</b>{" "} {indData.pattern}</p>
-                        </div>
 
                         <div className="size-select">
                             <label>size</label>
@@ -251,6 +265,22 @@ const ProductDetail = () => {
                             ADD TO CART
                         </button>
                         <hr />
+                        
+                        <div className="general-details">
+                        <h3 style={{marginBottom:"5px", fontSize:"18px"}}>Description</h3>
+                        <p style={{textAlign:"left", color:"black"}}>{indData.description}</p>
+                        <p><b>Fabric:</b>{" "} {indData.fabric}</p>
+                        <p><b>Sleeve Length:</b>{" "} {indData.sleeveLength}</p>
+                        <p><b>Pattern:</b>{" "} {indData.pattern}</p>
+                        <p><b>Est. Delievery:</b>{" "} 5 days</p>
+                        <p>
+                           <button onClick={handleShareButtonClick}>
+                            <IosShareIcon />
+                            Share
+                            </button>
+                         </p>
+                        </div>
+
                         <div className="accordation-items">
                             <Accordation />
                         </div>

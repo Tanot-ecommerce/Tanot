@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import logo from "../../Images/logo.png";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faFacebookF,
@@ -11,6 +12,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import "./Footer.css";
+import ModalForm from "../ModalForm/ModalForm";
 
 const Footer = () => {
     const [showScroll, setShowScroll] = useState(false);
@@ -34,6 +36,17 @@ const Footer = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
+      //to handle model form
+      const [isModalOpen, setIsModalOpen] = useState(false);
+
+      const openModal = () => {
+          setIsModalOpen(true);
+      };
+  
+      const closeModal = () => {
+          setIsModalOpen(false);
+      };
+  
     return (
         <footer id="footer" className="footer py-6">
             <div className="footer-container gap-10 flex mx-auto p-6">
@@ -101,9 +114,13 @@ const Footer = () => {
                                 <li>
                                     <a href="/returns">Returns &amp; Refunds</a>
                                 </li>
-                                <li>
-                                    <a href="/payment">Payment Methods</a>
-                                </li>
+                                <li style={{color:"black"}}>
+                                <Link onClick={openModal}>Feedback</Link>
+                                <ModalForm
+                                    isOpen={isModalOpen}
+                                    onClose={closeModal}
+                                />
+                            </li>
                             </ul>
                         </div>
                     </div>

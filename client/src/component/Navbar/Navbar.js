@@ -326,7 +326,7 @@ const Navbar = () => {
                                     isOpen={isModalOpen}
                                     onClose={closeModal}
                                 />
-                            </li>
+                            </li> 
                         </ul>
                     </div>
                     <div className="bottom-right text-white text-right">

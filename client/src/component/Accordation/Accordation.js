@@ -25,15 +25,13 @@ const Accordation = () => {
                 </Collapsible>
                 <Collapsible trigger="Return & Exchange Policy">
                     <p style={{ textAlign: "left", padding: "2%" }}>
-                        Return or exchange request will only be allowed within 5 days from the date of delivery.
+                        Replacement request will only be allowed within 5 days from the date of delivery.
                         <br />
-                        Return or Exchange request can be placed from the ‘Return or Exchange’ option at the footer of the website or through this link directly.
+                        Replacement request can be placed from the <b>"Feedback"</b> option at the footer of the website or through this link directly.
                         <br />
                         In case of exchange, if you select an item with a higher value compared to the item you're exchanging, we will ask you to pay the price difference. In case the value is lower, we will credit you with the difference.
                         <br />
                         Only after receiving our confirmation for the return, we will schedule a pickup for the order within 1-3 business days of placing the request with no additional costs.
-                        <br />
-                        Usually we receive the product in 6-7 days. On receiving, within 2-3 days we will issue the store credit or dispatch the exchanged product if all conditions are met.
                         <br />
                         If the item requested for exchange is not available, we will try to give you best possible alternatives or issue a store credit for the same.
                         <br />
