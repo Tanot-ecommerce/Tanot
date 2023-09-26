@@ -1,6 +1,7 @@
 # Tanot E-commerce Platform
 
 Welcome to Tanot, an e-commerce platform specializing in women's fashion, built using Create React App.
+Deployed Link: https://tanot.netlify.app/
 
 ## Features
 
